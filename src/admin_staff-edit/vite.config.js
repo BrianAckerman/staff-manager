@@ -15,12 +15,12 @@ export default defineConfig({
     outDir: "../../dist/",
     rollupOptions: {
       input: {
-        "staff-member-edit": "main.js",
+        "admin_staff-edit": "main.js",
       },
       output: {
-        entryFileNames: `staff-edit-bundle.js`,
-        chunkFileNames: `staff-edit-bundle.js`,
-        assetFileNames: `staff-edit-bundle.[ext]`,
+        entryFileNames: `admin_staff-edit-bundle.js`,
+        chunkFileNames: `admin_staff-edit.js`,
+        assetFileNames: `admin_staff-edit-bundle.[ext]`,
       },
     },
   },

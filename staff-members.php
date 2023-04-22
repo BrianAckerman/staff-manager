@@ -21,7 +21,8 @@ define('MSMP_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 // Include the files that define custom post types, meta boxes, and shortcodes
 require_once MSMP_PLUGIN_DIR . 'includes/custom-post-types.php';
-require_once MSMP_PLUGIN_DIR . 'includes/meta-boxes.php';
+require_once MSMP_PLUGIN_DIR . 'includes/admin_staff-edit.php';
+require_once MSMP_PLUGIN_DIR . 'includes/admin_staff-social-meta.php';
 require_once MSMP_PLUGIN_DIR . 'includes/shortcode.php';
 
 function register_staff_member_rest_routes() {

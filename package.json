@@ -1,5 +1,5 @@
 {
     "scripts": {
-        "build": "npm --prefix src/admin-list run build && npm --prefix src/staff-member-edit run build"
+        "build": "npm --prefix src/admin-list run build && npm --prefix src/admin_staff-edit run build"
     }
 }

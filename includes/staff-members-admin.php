@@ -55,7 +55,7 @@ add_action('admin_enqueue_scripts', 'staff_manager_enqueue_scripts');
 function staff_members_plugin_page() {  
 ?>
 
-<div id="my-staff-members-plugin-app">
+<div id="staff-members">
     <h1>Staff Members</h1>
     <div id="app"></div>
 </div>

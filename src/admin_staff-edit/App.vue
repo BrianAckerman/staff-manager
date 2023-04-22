@@ -1,6 +1,7 @@
 <script>
 export default {
-    data() {
+    name: 'admin_staff-edit',
+    data: function () {
         return {
             staffMemberData: {
                 firstName: '',
@@ -9,8 +10,6 @@ export default {
                 emailAddress: '',
                 phoneNumber: '',
                 bio: '',
-                profilePicture: null,
-                socialMediaLinks: '',
                 department: '',
                 hireDate: '',
                 workLocation: '',
@@ -19,36 +18,14 @@ export default {
                 awards: '',
                 showInSidebar: false
             },
-            links: [],
-            newLink: {
-                type: '',
-                url: '',
-                label: '',
-            },
         };
     },
-    methods: {
-        onProfilePictureChange(event) {
-            const file = event.target.files[0];
-            this.staffMemberData.profilePicture = file;
-        },
-        addLink() {
-            this.links.push({
-                type: this.newLink.type,
-                url: this.newLink.url,
-                label: this.newLink.label,
-            });
-            this.newLink.type = '';
-            this.newLink.url = '';
-            this.newLink.label = '';
-        },
-    }
 };
 </script>
 
 <template>
     <div class="staff-member-form">
-        <form @submit.prevent="handleSubmit">
+        <form @submit.prevent>
             <div>
                 <label for="first_name">First Name:</label>
                 <input type="text" id="first_name" v-model="staffMemberData.firstName" />
@@ -72,51 +49,6 @@ export default {
             <div>
                 <label for="bio">Bio/Description:</label>
                 <textarea id="bio" v-model="staffMemberData.bio"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="profile-picture">Profile Picture:</label>
-                <input type="file" id="profile-picture" v-on:change="onProfilePictureChange">
-            </div>
-            <ul>
-                <li v-for="(link, index) in links" :key="index">
-                    <a :href="link.url">{{ link.label || link.type }}</a>
-                    <div class="social-links">
-                        <div>
-                            <label for="social-media-type">Social Media Type:</label>
-                            <select id="social-media-type" v-model="newLink.type">
-                                <option value="">Select</option>
-                                <option value="Facebook">Facebook</option>
-                                <option value="Twitter">Twitter</option>
-                                <option value="Instagram">Instagram</option>
-                                <option value="LinkedIn">LinkedIn</option>
-                                <option value="YouTube">YouTube</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="social-link">Link</label>
-                            <input type="text" id="social-link" v-model="newLink.url">
-                        </div>
-                        <button @click="addLink">-</button>
-                    </div>
-                </li>
-            </ul>
-            <div class="social-links">
-                <div>
-                    <label for="social-media-type">Social Media Type:</label>
-                    <select id="social-media-type" v-model="newLink.type">
-                        <option value="">Select</option>
-                        <option value="Facebook">Facebook</option>
-                        <option value="Twitter">Twitter</option>
-                        <option value="Instagram">Instagram</option>
-                        <option value="LinkedIn">LinkedIn</option>
-                        <option value="YouTube">YouTube</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="social-link">Link</label>
-                    <input type="text" id="social-link" v-model="newLink.url">
-                </div>
-                <button @click="addLink">+</button>
             </div>
             <div>
                 <label for="department">Department/Division:</label>
@@ -146,7 +78,6 @@ export default {
                 <label for="show_in_sidebar">Show in Sidebar:</label>
                 <input type="checkbox" id="show_in_sidebar" v-model="staffMemberData.showInSidebar" />
             </div>
-            <button type="submit">Save</button>
         </form>
     </div>
 </template>
@@ -156,11 +87,6 @@ label {
     display: block;
     width: 100%;
     margin-bottom: 10px;
-}
-
-.social-links {
-    display: flex;
-    justify-content: space-between;
 }
 
 input,
