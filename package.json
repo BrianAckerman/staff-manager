@@ -1,5 +1,8 @@
 {
     "scripts": {
         "build": "npm --prefix src/admin-list run build && npm --prefix src/admin_staff-edit run build"
+    },
+    "dependencies": {
+        "mitt": "^3.0.0"
     }
 }

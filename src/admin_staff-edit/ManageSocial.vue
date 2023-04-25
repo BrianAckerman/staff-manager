@@ -1,157 +1,269 @@
 <template>
-    <div class="social-links">
-        <div v-if="links.length < 1 || this.view">
-            <form @submit.prevent>
-                <div>
-                    <label for="link-type">Type</label>
-                    <select name="link-type" v-model="activeLink.type">
-                        <option>- Select -</option>
-                        <option value="Facebook">Facebook</option>
-                        <option value="Twitter">Twitter</option>
-                        <option value="LinkedIn">LinkedIn</option>
-                        <option value="YouTube">YouTube</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="link-url">Link</label>
-                    <input type="url" name="link-url" v-model="activeLink.url" />
-                </div>
-                <div>
-                    <button @click.prevent="save">Save</button>
-                </div>
-            </form>
-        </div>
-        <div v-else>
-            <ul>
-                <li v-for="(link, index) in links" :key="index">
-                    <a :href="link.url" target="_blank">{{ link.type }}</a>
-                    <button @click.prevent="edit(index)">edit</button>
-                    <button @click.prevent="remove(index)">delete</button>
-                </li>
-            </ul>
-            <button @click.prevent="this.new">New</button>
-        </div>
-        <ul>
-            <li v-for="(error, index) in errors" :key="index">{{ error.message }}</li>
-        </ul>
-    </div>
+  <div v-if="!view || links.length < 1" class="msmp_staff-links">
+    <form @submit.prevent="save">
+      <div class="msmp_form-group">
+        <label for="link-type">Network or Website:</label>
+        <select
+          name="link-type"
+          v-model="activeLink.type"
+          required
+          class="msmp_form-control"
+        >
+          <option value="">- Select -</option>
+          <option value="Facebook">Facebook</option>
+          <option value="Twitter">Twitter</option>
+          <option value="LinkedIn">LinkedIn</option>
+          <option value="YouTube">YouTube</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="msmp_form-group">
+        <label for="link-url">Link:</label>
+        <input
+          type="url"
+          name="link-url"
+          required
+          v-model="activeLink.url"
+          class="msmp_form-control"
+        />
+      </div>
+      <div>
+        <button type="submit" class="msmp_btn msmp_btn-primary">Save</button>
+        <button
+          @click="cancel"
+          type="reset"
+          class="msmp_btn msmp_btn-secondary"
+          v-if="links.length > 0"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+  <div v-else class="msmp_staff-links">
+    <ul class="msmp_social-links-list">
+      <li
+        v-for="(link, index) in links"
+        :key="index"
+        class="msmp_social-link-item"
+      >
+        <span
+          :class="
+            typeof link.type !== 'undefined' ? link.type.toLowerCase() : ''
+          "
+          >{{ link.type }}</span
+        >
+        <button
+          @click.prevent="edit(index)"
+          class="msmp_btn msmp_btn-link"
+          title="Edit the link"
+        >
+          <span class="material-icons">edit</span>
+        </button>
+        <button
+          @click.prevent="remove(index)"
+          class="msmp_btn msmp_btn-link"
+          title="Delete the link"
+        >
+          <span class="material-icons">delete_forever</span>
+        </button>
+      </li>
+    </ul>
+    <button class="msmp_btn msmp_btn-secondary" @click.prevent="this.new">
+      New
+    </button>
+  </div>
 </template>
+
 <script>
+import { inject, reactive } from "vue";
+
 export default {
-    data: function () {
-        return {
-            view: false,
-            activeIndex: null,
-            activeLink: {
-                type: "",
-                url: "",
-            },
-            links: [
-                {
-                    type: "Facebook",
-                    url: "http://www.facebook.com",
-                },
-            ],
-            errors: [],
-        };
+  name: "admin_staff-social-links-edit",
+  setup() {
+    const state = inject("state");
+    const socialLinks = props.socialLinks;
+
+    return {
+      socialLinks,
+    };
+  },
+  props: {
+    socialLinks: {
+      type: Array,
+      default: [],
     },
-    methods: {
-        new() {
-            this.activeLink = {
-                type: "",
-                url: "",
-            };
-            this.activeIndex = this.links.length + 1;
-            this.view = !this.view;
-        },
-        edit(index) {
-            this.activeIndex = index;
-            this.activeLink = this.links[index];
-            this.view = !this.view;
-        },
-        save() {
-            if (this.activeLink.type === "") {
-                // need to check if this error is already in the errors set
-                this.errors.push({
-                    type: "error:type",
-                    message: "You must select a social network",
-                });
-                return;
-            }
-            if (this.activeLink.url === "") {
-                // need to check if this error is already in the errors set
-                this.errors.push({
-                    type: "error:url",
-                    message: "Please enter a url in the field",
-                });
-                return;
-            }
-            if (this.links[this.activeIndex] && this.activeIndex) {
-                this.links[this.activeIndex].type = this.activeLink.type;
-                this.links[this.activeIndex].url = this.activeLink.url;
-            } else {
-                this.links.push({
-                    type: this.activeLink.type,
-                    url: this.activeLink.url,
-                });
-            }
-            this.view = !this.view;
-            this.errors = [];
-        },
-        remove(index) {
-            console.log(index);
-            this.links.splice(index, 1);
-        },
+  },
+  data: function () {
+    return {
+      view: null,
+      activeIndex: null,
+      activeLink: {},
+      links: [],
+    };
+  },
+  created() {
+    const socialLinks = inject("state").socialLinks;
+    this.links = socialLinks;
+    this.view = this.links.length > 0;
+  },
+  methods: {
+    new() {
+      this.activeLink = {
+        type: "",
+        url: "",
+      };
+      this.activeIndex = this.links.length + 1;
+      this.view = false;
     },
+    edit(index) {
+      this.activeIndex = index;
+      this.activeLink = this.links[index];
+      this.view = false;
+    },
+    save(event) {
+      if (this.links[this.activeIndex] && this.activeIndex !== null) {
+        // Update an existing record
+        this.links[this.activeIndex].type = this.activeLink.type;
+        this.links[this.activeIndex].url = this.activeLink.url;
+        this.view = true;
+      } else {
+        // Push a new record
+        this.links.push({
+          type: this.activeLink.type,
+          url: this.activeLink.url,
+        });
+        this.view = true;
+      }
+      // access state from parent app
+      const state = inject("state");
+
+      // update socialLinks array
+      state.socialLinks = this.links;
+    },
+    remove(index) {
+      this.activeLink = {};
+      if (this.links.length > 0) {
+        this.links.splice(index, 1);
+      } else {
+        this.links = [];
+        this.view = false;
+      }
+    },
+    cancel() {
+      this.view = true;
+    },
+  },
 };
 </script>
+
 <style scoped>
-.invalid {
-    border-color: red;
+.msmp_staff-links {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.valid {
-    border-color: green;
+.msmp_social-links-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-h3 {
-    margin-top: 0;
+.msmp_social-link-item {
+  margin: 0;
+  padding: 5px 0;
+  display: flex;
+  justify-content: space-between;
 }
 
-.social-links div {
-    margin-bottom: 1rem;
-    display: flex;
-    flex-direction: column;
+.msmp_social-link-item span {
+  flex-grow: 1;
 }
 
-.social-links div:last-child {
-    display: flex;
-    justify-content: center;
+.msmp_btn-link span {
+  font-size: 16px;
+  color: #9a9a9a;
 }
 
-.social-links label {
-    font-weight: bold;
-    margin-bottom: 0.25rem;
+.msmp_btn-link span:hover {
+  color: #343434;
 }
 
-.social-links input,
-.social-links select {
-    font-size: 1rem;
-    padding: 0.5rem;
-    border-radius: 0.25rem;
-    border: 1px solid #ccc;
+.msmp_btn {
+  cursor: pointer;
 }
 
-.social-links button {
-    padding: 0.5rem;
-    border-radius: 0.25rem;
-    border: none;
-    background-color: #007cba;
-    color: #fff;
+.msmp_btn-link {
+  padding: 0 0 0 0.5em;
+  background: none;
+  border: 0 none;
+  text-decoration: underline;
 }
 
-.social-links button:hover {
-    background-color: #006aa5;
-    cursor: pointer;
+.msmp_btn-link:hover {
+  color: #135e96;
+}
+
+.msmp_form-group label {
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 0.25em;
+  line-height: 1.25;
+}
+
+.msmp_form-control {
+  width: 100%;
+}
+
+.msmp_btn-primary {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 13px;
+  line-height: 2.15384615;
+  min-height: 30px;
+  margin: 1em 0.5em 0 0;
+  padding: 0 10px;
+  cursor: pointer;
+  border-width: 1px;
+  border-style: solid;
+  -webkit-appearance: none;
+  border-radius: 3px;
+  white-space: nowrap;
+  box-sizing: border-box;
+  color: #f6f7f7;
+  border-color: #2271b1;
+  background: #2271b1;
+}
+
+.msmp_btn-primary:hover {
+  background: #135e96;
+  border-color: #135e96;
+  color: #fff;
+}
+
+.msmp_btn-secondary {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 13px;
+  line-height: 2.15384615;
+  min-height: 30px;
+  margin: 0;
+  padding: 0 10px;
+  cursor: pointer;
+  border-width: 1px;
+  border-style: solid;
+  -webkit-appearance: none;
+  border-radius: 3px;
+  white-space: nowrap;
+  box-sizing: border-box;
+  color: #2271b1;
+  border-color: #2271b1;
+  background: #f6f7f7;
+}
+
+.msmp_btn-secondary:hover {
+  background: #f0f0f1;
+  border-color: #0a4b78;
+  color: #0a4b78;
 }
 </style>

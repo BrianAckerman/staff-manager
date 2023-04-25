@@ -22,7 +22,7 @@ define('MSMP_PLUGIN_URL', plugin_dir_url(__FILE__));
 // Include the files that define custom post types, meta boxes, and shortcodes
 require_once MSMP_PLUGIN_DIR . 'includes/custom-post-types.php';
 require_once MSMP_PLUGIN_DIR . 'includes/admin_staff-edit.php';
-require_once MSMP_PLUGIN_DIR . 'includes/admin_staff-social-meta.php';
+require_once MSMP_PLUGIN_DIR . 'includes/admin_staff-meta.php';
 require_once MSMP_PLUGIN_DIR . 'includes/shortcode.php';
 
 function register_staff_member_rest_routes() {
@@ -95,3 +95,12 @@ function get_staff_member_counts() {
 
     return new WP_REST_Response($counts, 200);
 }
+
+function enqueue_materialicons_styles() {
+    wp_enqueue_style(
+        'material-icons',
+        'https://fonts.googleapis.com/icon?family=Material+Icons'
+    );
+}
+add_action( 'wp_enqueue_scripts', 'enqueue_materialicons_styles' );
+add_action( 'admin_enqueue_scripts', 'enqueue_materialicons_styles' );

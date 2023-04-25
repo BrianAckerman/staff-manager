@@ -14,14 +14,15 @@ function create_staff_meta_box() {
 
 function staff_meta_box_callback($post) {
     // Enqueue the Vue app
-    wp_enqueue_script('msmp-script', MSMP_PLUGIN_URL . 'dist/admin_staff-edit-bundle.js', array(), '1.0', true);
+    wp_enqueue_script('msmp-staff-edit-script', MSMP_PLUGIN_URL . 'dist/admin_staff-edit-bundle.js', array(), '1.0', true);
     wp_enqueue_style('msmp-style', MSMP_PLUGIN_URL . 'dist/admin_staff-edit-bundle.css', array(), '1.0');
 
     // Pass data to the Vue app
-    wp_localize_script('msmp-script', 'wpData', array(
+    wp_localize_script('msmp-staff-edit-script', 'wpData', array(
         'nonce' => wp_create_nonce('wp_rest'),
         'postId' => $post->ID,
         'postType' => $post->post_type,
+        'socialLinks' => get_post_meta($post->ID, 'social_links', true),
     ));
 
     // Add a placeholder element for the Vue app

@@ -40,7 +40,7 @@ function staff_manager_enqueue_scripts($hook_suffix) {
 
     // Enqueue scripts and styles
     wp_enqueue_script( 'vue', 'https://unpkg.com/vue@3/dist/vue.global.js', array(), '1.0');
-    wp_enqueue_script('msmp-script', MSMP_PLUGIN_URL . 'dist/staff-list-bundle.js', array(), '1.0', true);
+    wp_enqueue_script('msmp-script', MSMP_PLUGIN_URL . 'dist/staff-list-bundle.js', array('vue'), '1.0', true);
     wp_enqueue_style('msmp-style', MSMP_PLUGIN_URL . 'dist/staff-list-bundle.css', array(), '1.0');
 
     // Localize user capability
