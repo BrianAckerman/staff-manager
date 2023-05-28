@@ -1,17 +1,15 @@
-import { createApp, reactive, inject } from "vue";
-import App from "./App.vue";
-import SocialLinks from "./ManageSocial.vue";
+import { createApp } from "vue";
+import { createPinia } from "pinia";
 
-const app = createApp(App);
-app.mount("#admin_staff-edit-app");
+import staffProfile from "./ManageStaffProfile.vue";
+import staffLinks from "./ManageStaffSocial.vue";
 
-const socialLinks = createApp(SocialLinks, {
-  socialLinks: state.socialLinks,
-});
-socialLinks.mount("#social-links-app");
+const staffProfileApp = createApp(staffProfile);
+const staffLinksApp = createApp(staffLinks);
+const store = createPinia();
 
-const state = reactive({
-  socialLinks: [],
-});
+staffProfileApp.use(store);
+staffLinksApp.use(store);
 
-app.provide("state", state);
+createApp(staffProfile).mount("#admin_staff-edit-app");
+createApp(staffLinks).mount("#social-links-app");

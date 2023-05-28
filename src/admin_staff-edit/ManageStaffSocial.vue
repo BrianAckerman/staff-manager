@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!view || links.length < 1" class="msmp_staff-links">
+  <div v-if="!view || staffInfo.staffLinks.length < 1" class="msmp_staff-links">
     <form @submit.prevent="save">
       <div class="msmp_form-group">
         <label for="link-type">Network or Website:</label>
@@ -33,7 +33,7 @@
           @click="cancel"
           type="reset"
           class="msmp_btn msmp_btn-secondary"
-          v-if="links.length > 0"
+          v-if="staffInfo.staffLinks.length > 0"
         >
           Cancel
         </button>
@@ -43,7 +43,7 @@
   <div v-else class="msmp_staff-links">
     <ul class="msmp_social-links-list">
       <li
-        v-for="(link, index) in links"
+        v-for="(link, index) in staffInfo.staffLinks"
         :key="index"
         class="msmp_social-link-item"
       >
@@ -53,19 +53,11 @@
           "
           >{{ link.type }}</span
         >
-        <button
-          @click.prevent="edit(index)"
-          class="msmp_btn msmp_btn-link"
-          title="Edit the link"
-        >
-          <span class="material-icons">edit</span>
+        <button @click.prevent="edit(index)" class="msmp_btn msmp_btn-link">
+          Edit
         </button>
-        <button
-          @click.prevent="remove(index)"
-          class="msmp_btn msmp_btn-link"
-          title="Delete the link"
-        >
-          <span class="material-icons">delete_forever</span>
+        <button @click.prevent="remove(index)" class="msmp_btn msmp_btn-link">
+          Delete
         </button>
       </li>
     </ul>
@@ -76,36 +68,28 @@
 </template>
 
 <script>
-import { inject, reactive } from "vue";
+import { mapWritableState } from "pinia";
+import { useStaffStore } from "./stores/staffMember";
 
 export default {
-  name: "admin_staff-social-links-edit",
-  setup() {
-    const state = inject("state");
-    const socialLinks = props.socialLinks;
-
-    return {
-      socialLinks,
-    };
-  },
-  props: {
-    socialLinks: {
-      type: Array,
-      default: [],
-    },
-  },
   data: function () {
     return {
       view: null,
       activeIndex: null,
       activeLink: {},
-      links: [],
     };
   },
+  computed: {
+    ...mapWritableState(useStaffStore, {
+      staffInfo: "staffInfo",
+    }),
+  },
   created() {
-    const socialLinks = inject("state").socialLinks;
-    this.links = socialLinks;
-    this.view = this.links.length > 0;
+    if (this.staffInfo.staffLinks.length > 0) {
+      this.view = true;
+    } else {
+      this.view = false;
+    }
   },
   methods: {
     new() {
@@ -113,40 +97,38 @@ export default {
         type: "",
         url: "",
       };
-      this.activeIndex = this.links.length + 1;
+      this.activeIndex = this.staffInfo.staffLinks.length + 1;
       this.view = false;
     },
     edit(index) {
       this.activeIndex = index;
-      this.activeLink = this.links[index];
+      this.activeLink = this.staffInfo.staffLinks[index];
       this.view = false;
     },
     save(event) {
-      if (this.links[this.activeIndex] && this.activeIndex !== null) {
+      if (
+        this.staffInfo.staffLinks[this.activeIndex] &&
+        this.activeIndex !== null
+      ) {
         // Update an existing record
-        this.links[this.activeIndex].type = this.activeLink.type;
-        this.links[this.activeIndex].url = this.activeLink.url;
+        this.staffInfo.staffLinks[this.activeIndex].type = this.activeLink.type;
+        this.staffInfo.staffLinks[this.activeIndex].url = this.activeLink.url;
         this.view = true;
       } else {
         // Push a new record
-        this.links.push({
+        this.staffInfo.staffLinks.push({
           type: this.activeLink.type,
           url: this.activeLink.url,
         });
         this.view = true;
       }
-      // access state from parent app
-      const state = inject("state");
-
-      // update socialLinks array
-      state.socialLinks = this.links;
     },
     remove(index) {
       this.activeLink = {};
-      if (this.links.length > 0) {
-        this.links.splice(index, 1);
+      if (this.staffInfo.staffLinks.length > 0) {
+        this.staffInfo.staffLinks.splice(index, 1);
       } else {
-        this.links = [];
+        this.staffInfo.staffLinks = [];
         this.view = false;
       }
     },

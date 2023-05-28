@@ -1,8 +1,12 @@
 {
     "scripts": {
-        "build": "npm --prefix src/admin-list run build && npm --prefix src/admin_staff-edit run build"
+        "build": "npm --prefix src/admin-list run build && npm --prefix src/admin_staff-edit run build && npm --prefix src/archive_staff run build"
     },
     "dependencies": {
-        "mitt": "^3.0.0"
+        "@vitejs/plugin-vue": "^4.2.1",
+        "mitt": "^3.0.0",
+        "pinia": "^2.0.35",
+        "vite": "^4.3.3",
+        "vue": "^3.2.47"
     }
 }

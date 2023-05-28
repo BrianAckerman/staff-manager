@@ -34,11 +34,20 @@ function create_affiliate_meta_box() {
     );
 }
 
-function staff_create_affiliate_callback($post) {
-     echo '<form>
-        <label for="isAffiliate">Is this an affiliate?</label>
-        <input type="checkbox" name="isAffiliate" />
-        </form>
-     ';
+function staff_create_affiliate_callback($post) { $isAffiliate_field_value = get_post_meta($post->ID, 'isAffiliate', true);
+?>
+<label for="isAffiliate">Is this an affiliate?</label>
+<input type="checkbox" id="isAffiliate" name="isAffiliate" <?php checked($isAffiliate_field_value, 1); ?> />
+<?php
 }
+
+function staff_save_meta_data($post_id) {
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    $isAffiliate_value = isset($_POST['isAffiliate']) ? 1 : 0;
+    update_post_meta($post_id, 'isAffiliate', $isAffiliate_value);
+}
+add_action('save_post_staff_member', 'staff_save_meta_data');
 ?>
