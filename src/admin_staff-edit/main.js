@@ -1,15 +1,18 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-
+import { QuillEditor } from "@vueup/vue-quill";
+import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import staffProfile from "./ManageStaffProfile.vue";
 import staffLinks from "./ManageStaffSocial.vue";
 
-const staffProfileApp = createApp(staffProfile);
-const staffLinksApp = createApp(staffLinks);
 const store = createPinia();
 
-staffProfileApp.use(store);
-staffLinksApp.use(store);
+const createAndMountApp = (component, mountPoint, store) => {
+  const app = createApp(component);
+  app.use(store);
+  app.component("QuillEditor", QuillEditor);
+  app.mount(mountPoint);
+};
 
-createApp(staffProfile).mount("#admin_staff-edit-app");
-createApp(staffLinks).mount("#social-links-app");
+createAndMountApp(staffProfile, "#admin_staff-edit-app", store);
+createAndMountApp(staffLinks, "#social-links-app", store);
