@@ -71,10 +71,6 @@ export default {
 </template>
 
 <style scoped>
-.ql-editor {
-  min-height: 200px;
-}
-
 label {
   display: block;
   width: 100%;

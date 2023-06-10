@@ -24,7 +24,22 @@ require_once MSMP_PLUGIN_DIR . 'includes/custom-post-types.php';
 require_once MSMP_PLUGIN_DIR . 'includes/admin_staff-edit.php';
 require_once MSMP_PLUGIN_DIR . 'includes/admin_staff-meta.php';
 require_once MSMP_PLUGIN_DIR . 'includes/shortcode.php';
+require_once MSMP_PLUGIN_DIR . 'includes/quick-contacts.php';
 
+// Define single template
+function msmp_custom_single_template($template) {
+    if (is_singular('staff_member')) {
+        $new_template = MSMP_PLUGIN_DIR . 'templates/single-staff_member.php';
+        if (file_exists($new_template)) {
+            return $new_template;
+        }
+    }
+    return $template;
+}
+add_filter('template_include', 'msmp_custom_single_template');
+
+
+// Routes and REST
 function register_staff_member_rest_routes() {
     register_rest_route(
         'staff-members/v1',
@@ -96,11 +111,13 @@ function get_staff_member_counts() {
     return new WP_REST_Response($counts, 200);
 }
 
-function enqueue_materialicons_styles() {
-    wp_enqueue_style(
-        'material-icons',
-        'https://fonts.googleapis.com/icon?family=Material+Icons'
-    );
-}
-add_action( 'wp_enqueue_scripts', 'enqueue_materialicons_styles' );
-add_action( 'admin_enqueue_scripts', 'enqueue_materialicons_styles' );
+
+
+// Register the activation hook.
+register_activation_hook( __FILE__, 'create_quick_contacts_table' );
+
+// Register the filter.
+add_filter( 'quick_contact_enable', 'disable_quick_contact_if_draft' );
+
+// Register the action.
+add_action( 'delete_post', 'delete_quick_contact_if_deleted' );

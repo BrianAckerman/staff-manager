@@ -4,6 +4,7 @@ import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import staffProfile from "./ManageStaffProfile.vue";
 import staffLinks from "./ManageStaffSocial.vue";
+import "../assets/core.css";
 
 const store = createPinia();
 

@@ -11,6 +11,7 @@
         >
           <option value="">- Select -</option>
           <option value="Facebook">Facebook</option>
+          <option value="Instagram">Instagram</option>
           <option value="Twitter">Twitter</option>
           <option value="LinkedIn">LinkedIn</option>
           <option value="YouTube">YouTube</option>
@@ -51,7 +52,7 @@
           :class="
             typeof link.type !== 'undefined' ? link.type.toLowerCase() : ''
           "
-          >{{ link.type }}</span
+          >{{ link.type }} {{ link.url }}</span
         >
         <button @click.prevent="edit(index)" class="msmp_btn msmp_btn-link">
           Edit
@@ -160,6 +161,9 @@ export default {
 
 .msmp_social-link-item span {
   flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .msmp_btn-link span {

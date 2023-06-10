@@ -1,0 +1,6 @@
+.ql-editor {
+  min-height: 200px;
+}
+.ql-editor ul>li:before {
+    content: '\2022';
+}

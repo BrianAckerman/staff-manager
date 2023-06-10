@@ -1,6 +1,4 @@
 <?php
-
-
 function enqueue_archive_assets($posts) {
     if (empty($posts)) {
         return $posts;
@@ -26,10 +24,6 @@ function enqueue_archive_assets($posts) {
     return $posts;
 }
 add_filter('the_posts', 'enqueue_archive_assets');
-
-
-
-
 
 
 // Register the [staff_archive] shortcode
