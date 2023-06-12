@@ -17,30 +17,52 @@ export default {
   methods: {
     async fetchStaffItems() {
       if (!canEditPosts) {
-        console.log('User does not have edit_posts capability');
+        console.log("User does not have edit_posts capability");
         return;
       }
 
       try {
         const statusParam = this.trashView ? "trash" : "any";
-        const response = await fetch(`/wp-json/wp/v2/staff-members?status=${statusParam}`, {
-          headers: {
-            "X-WP-Nonce": wpData.nonce,
-          },
-        });
-        const posts = await response.json();
-        this.staff_items = posts;
+        const response = await fetch(
+          `/wp-json/wp/v2/staff-members?status=${statusParam}`,
+          {
+            headers: {
+              "X-WP-Nonce": wpData.nonce,
+            },
+          }
+        );
+        let posts = await response.json();
 
-        await this.fetchPostCounts(); // Fetch the post counts
+        // Fetch featured images
+        for (let post of posts) {
+          try {
+            const postFeatured = post._links["wp:featuredmedia"][0].href;
+            const featuredResponse = await fetch(postFeatured, {
+              headers: {
+                "X-WP-Nonce": wpData.nonce,
+              },
+            });
+            const featuredImage = await featuredResponse.json();
+
+            // Add the featured image to the post object
+            post.featured =
+              featuredImage.media_details.sizes.thumbnail.source_url;
+          } catch (error) {
+            console.warn(error + ". No featured image set.");
+          }
+        }
+        this.staff_items = posts;
+        console.log(posts);
+        await this.fetchPostCounts();
       } catch (error) {
         console.error(error);
       }
     },
     async fetchPostCounts() {
       try {
-        const response = await fetch('/wp-json/staff-members/v1/counts/', {
+        const response = await fetch("/wp-json/staff-members/v1/counts/", {
           headers: {
-            'X-WP-Nonce': wpData.nonce,
+            "X-WP-Nonce": wpData.nonce,
           },
         });
 
@@ -59,21 +81,27 @@ export default {
       window.location.href = editUrl;
     },
     createNewStaffMember() {
-      const newStaffMemberUrl = '/wp-admin/post-new.php?post_type=staff_member';
+      const newStaffMemberUrl = "/wp-admin/post-new.php?post_type=staff_member";
       window.location.href = newStaffMemberUrl;
     },
     async togglePublishStatus(item) {
       try {
-        const newStatus = item.status === "publish" || item.status === "trash" ? "draft" : "publish";
+        const newStatus =
+          item.status === "publish" || item.status === "trash"
+            ? "draft"
+            : "publish";
 
-        const response = await fetch(`/wp-json/staff-members/v1/staff-members/${item.id}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-WP-Nonce": wpData.nonce,
-          },
-          body: JSON.stringify({ status: newStatus }),
-        });
+        const response = await fetch(
+          `/wp-json/staff-members/v1/staff-members/${item.id}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-WP-Nonce": wpData.nonce,
+            },
+            body: JSON.stringify({ status: newStatus }),
+          }
+        );
 
         if (!response.ok) {
           throw new Error("An error occurred while updating the post.");
@@ -91,14 +119,17 @@ export default {
     },
     async moveToTrash(item) {
       try {
-        const response = await fetch(`/wp-json/staff-members/v1/staff-members/${item.id}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-WP-Nonce': wpData.nonce,
-          },
-          body: JSON.stringify({ status: 'trash' }),
-        });
+        const response = await fetch(
+          `/wp-json/staff-members/v1/staff-members/${item.id}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-WP-Nonce": wpData.nonce,
+            },
+            body: JSON.stringify({ status: "trash" }),
+          }
+        );
 
         if (!response.ok) {
           throw new Error("An error occurred while trashing the post.");
@@ -113,7 +144,7 @@ export default {
     toggleTrashView() {
       this.trashView = !this.trashView;
       this.fetchStaffItems();
-    }
+    },
   },
   created: function () {
     this.fetchStaffItems();
@@ -126,33 +157,44 @@ export default {
   <p>Published: {{ postCounts.publish }}</p>
   <p>Draft: {{ postCounts.draft }}</p>
   <p>Trash: {{ postCounts.trash }}</p>
-  <button @click="createNewStaffMember">New Staff Member</button>
-  <button @click="toggleTrashView">
+  <button class="button" @click="createNewStaffMember">New Staff Member</button>
+  <button v-if="postCounts.trash > 0" class="button" @click="toggleTrashView">
     {{ trashView ? "View All Items" : "View Trashed Items" }}
   </button>
   <ul class="staff-list">
-    <li v-for="item in staff_items" :key="item.id">
+    <li :class="item.status" v-for="item in staff_items" :key="item.id">
+      <div class="list-image">
+        <img
+          v-if="item.featured"
+          :src="item.featured"
+          :alt="item.title.rendered"
+        />
+        <div v-else class="list-noimage"></div>
+      </div>
       <div class="list-info">
         <h3>{{ item.title.rendered }}</h3>
         <div>
-          slug: {{ item.slug }}
-          created: {{ item.date }}
-          modified: {{ item.modified }}
-          status: {{ item.status }}
+          slug: {{ item.slug }} created: {{ item.date }} modified:
+          {{ item.modified }} status: {{ item.status }}
         </div>
       </div>
       <div class="list-actions">
-        <button v-if="!trashView" @click="moveToTrash(item)">Trash</button>
-        <button @click="togglePublishStatus(item)">
+        <a class="button" :href="item.link">{{
+          item.status === "publish" ? "View" : "Preview"
+        }}</a>
+        <button class="button" v-if="!trashView" @click="moveToTrash(item)">
+          Trash
+        </button>
+        <button class="button" @click="togglePublishStatus(item)">
           {{
             item.status === "publish"
-            ? "Unpublish"
-            : item.status === "trash"
+              ? "Unpublish"
+              : item.status === "trash"
               ? "Restore"
               : "Publish"
           }}
         </button>
-        <button @click="editStaffMember(item.id)">Edit</button>
+        <button class="button" @click="editStaffMember(item.id)">Edit</button>
       </div>
     </li>
   </ul>
@@ -162,25 +204,55 @@ export default {
 </template>
 
 <style scoped>
+.staff-list {
+  margin-right: 20px;
+}
 .staff-list h3 {
   padding: 0;
   margin: 0;
 }
 
 .staff-list li {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 100px 1fr 300px;
   padding: 10px 20px;
-  border-bottom: solid 1px;
+  border-bottom: solid 1px #a7a7a7;
   margin: 0;
 }
 
 .staff-list {
   background: #fff;
-  border: solid 1px;
+  border: solid 1px #a7a7a7;
+  border-radius: 5px;
 }
 
 .staff-list li:last-child {
   border-bottom: 0 none;
+}
+
+.staff-list li.draft > * {
+  opacity: 0.45;
+}
+.staff-list li.draft .list-actions {
+  opacity: 1;
+}
+
+.staff-list .list-image img {
+  border-radius: 70px;
+  width: 70px;
+}
+
+.staff-list .list-image .list-noimage {
+  height: 70px;
+  width: 70px;
+  background: #fafafa;
+  border-radius: 70px;
+}
+
+.staff-list .list-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  align-items: center;
+  text-align: center;
 }
 </style>

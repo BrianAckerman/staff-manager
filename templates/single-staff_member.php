@@ -65,10 +65,12 @@ get_header();
                     }
                     echo '</div>';
                 }
-                echo '</address>';
-                echo '<div class="staff_body">';
-                echo $about_sanitized;
-                echo '</div>';
+                if(isset($about_sanitized)) {
+                    echo '</address>';
+                    echo '<div class="staff_body">';
+                    echo $about_sanitized;
+                    echo '</div>';
+                }
             }
             // End the loop.
             ?>

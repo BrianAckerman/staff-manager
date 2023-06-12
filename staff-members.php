@@ -24,7 +24,7 @@ require_once MSMP_PLUGIN_DIR . 'includes/custom-post-types.php';
 require_once MSMP_PLUGIN_DIR . 'includes/admin_staff-edit.php';
 require_once MSMP_PLUGIN_DIR . 'includes/admin_staff-meta.php';
 require_once MSMP_PLUGIN_DIR . 'includes/shortcode.php';
-require_once MSMP_PLUGIN_DIR . 'includes/quick-contacts.php';
+// require_once MSMP_PLUGIN_DIR . 'includes/quick-contacts.php';
 
 // Define single template
 function msmp_custom_single_template($template) {
@@ -112,7 +112,7 @@ function get_staff_member_counts() {
 }
 
 
-
+/*
 // Register the activation hook.
 register_activation_hook( __FILE__, 'create_quick_contacts_table' );
 
@@ -120,4 +120,6 @@ register_activation_hook( __FILE__, 'create_quick_contacts_table' );
 add_filter( 'quick_contact_enable', 'disable_quick_contact_if_draft' );
 
 // Register the action.
-add_action( 'delete_post', 'delete_quick_contact_if_deleted' );
+add_action( 'delete_post', 'delete_quick_contact_if_deleted' ); */
+
+?>
