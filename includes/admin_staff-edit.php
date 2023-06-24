@@ -29,8 +29,8 @@ function staff_meta_box_callback($post) {
     $staff_post_content = isset($post) ? $post->post_content : '';
     ?>
 <!-- Add this hidden input field in your custom meta box -->
-<input type="hidden" id="staff_post_content" name="staff_post_content"
-    value="<?php echo esc_attr($staff_post_content); ?>" ref="postContentInput" />
+<input type="hidden" id="staff_post_content" name="post_content" value="<?php echo esc_attr($staff_post_content); ?>"
+    ref="postContentInput" />
 <div id="admin_staff-edit-app"></div>
 <?php
 }
@@ -40,6 +40,10 @@ function staff_update_post_content($data, $postarr) {
     if (isset($_POST['staff_post_content']) && $data['post_type'] === 'staff_member') {
         // Update the post_content field with the staff_post_content value
         $data['post_content'] = $_POST['staff_post_content'];
+    } elseif (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE && $data['post_type'] === 'staff_member') {
+        // Handle autosave: Retrieve the content from the appropriate source and update the post_content field
+        $content = $_POST['content']; // Adjust this according to your implementation
+         $data['post_content'] = $_POST['staff_post_content'];
     }
     return $data;
 }

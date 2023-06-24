@@ -12,19 +12,22 @@
  * Text Domain: staff-plugin
  */
 
- // Include the custom admin page file
-include( plugin_dir_path( __FILE__ ) . 'includes/staff-members-admin.php' );
-
 // Define constants for plugin paths and URLs
 define('MSMP_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('MSMP_PLUGIN_URL', plugin_dir_url(__FILE__));
+
+// Include the database file
+require_once MSMP_PLUGIN_DIR . 'includes/database.php';
+
+ // Include the custom admin page file
+require_once MSMP_PLUGIN_DIR . 'includes/staff-members-admin.php';
 
 // Include the files that define custom post types, meta boxes, and shortcodes
 require_once MSMP_PLUGIN_DIR . 'includes/custom-post-types.php';
 require_once MSMP_PLUGIN_DIR . 'includes/admin_staff-edit.php';
 require_once MSMP_PLUGIN_DIR . 'includes/admin_staff-meta.php';
 require_once MSMP_PLUGIN_DIR . 'includes/shortcode.php';
-// require_once MSMP_PLUGIN_DIR . 'includes/quick-contacts.php';
+require_once MSMP_PLUGIN_DIR . 'includes/admin_staff_options.php';
 
 // Define single template
 function msmp_custom_single_template($template) {
@@ -111,15 +114,18 @@ function get_staff_member_counts() {
     return new WP_REST_Response($counts, 200);
 }
 
+add_action( 'admin_menu', 'staff_members_plugin_menu' );
 
+// Example POST data - for debugging
 /*
-// Register the activation hook.
-register_activation_hook( __FILE__, 'create_quick_contacts_table' );
-
-// Register the filter.
-add_filter( 'quick_contact_enable', 'disable_quick_contact_if_draft' );
-
-// Register the action.
-add_action( 'delete_post', 'delete_quick_contact_if_deleted' ); */
-
+function preview_post_data($post_id) {
+    //if (isset($_POST['wp-preview']) && $_POST['wp-preview'] === 'dopreview') {
+        echo '<pre>';
+        print_r($_POST);
+        echo '</pre>';
+        wp_die(); // Stop further execution and display the POST data
+    //}
+}
+add_action('save_post', 'preview_post_data');
+*/
 ?>

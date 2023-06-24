@@ -22,7 +22,7 @@ function msmp_register_staff_member_post_type()
         'show_ui'             => true,
         'menu_icon'           => 'dashicons-groups',
         'rewrite'             => array('slug' => 'staff-members'),
-        'supports'            => array('title', 'thumbnail'),
+        'supports'            => array('title', 'thumbnail', 'revisions'),
         'has_archive'         => true,
         'show_in_rest'        => true,
         'rest_base'           => 'staff-members',
