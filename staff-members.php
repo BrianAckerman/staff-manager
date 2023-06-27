@@ -20,24 +20,11 @@ define('MSMP_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('MSMP_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 // Include the files that define custom post types, meta boxes, and shortcodes
-require_once MSMP_PLUGIN_DIR . 'includes/custom-post-types.php';
+require_once MSMP_PLUGIN_DIR . 'includes/custom-post-type.php';
 require_once MSMP_PLUGIN_DIR . 'includes/admin_staff-edit.php';
 require_once MSMP_PLUGIN_DIR . 'includes/admin_staff-meta.php';
 require_once MSMP_PLUGIN_DIR . 'includes/shortcode.php';
 // require_once MSMP_PLUGIN_DIR . 'includes/quick-contacts.php';
-
-// Define single template
-function msmp_custom_single_template($template) {
-    if (is_singular('staff_member')) {
-        $new_template = MSMP_PLUGIN_DIR . 'templates/single-staff_member.php';
-        if (file_exists($new_template)) {
-            return $new_template;
-        }
-    }
-    return $template;
-}
-add_filter('template_include', 'msmp_custom_single_template');
-
 
 // Routes and REST
 function register_staff_member_rest_routes() {
@@ -110,7 +97,6 @@ function get_staff_member_counts() {
 
     return new WP_REST_Response($counts, 200);
 }
-
 
 /*
 // Register the activation hook.

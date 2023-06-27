@@ -22,7 +22,7 @@ function msmp_register_staff_member_post_type()
         'show_ui'             => true,
         'menu_icon'           => 'dashicons-groups',
         'rewrite'             => array('slug' => 'staff-members'),
-        'supports'            => array('title', 'thumbnail'),
+        'supports'            => array('title', 'thumbnail', 'revisions'),
         'has_archive'         => true,
         'show_in_rest'        => true,
         'rest_base'           => 'staff-members',
@@ -30,10 +30,10 @@ function msmp_register_staff_member_post_type()
     );
     register_post_type('staff_member', $args);
 }
-
 add_action('init', 'msmp_register_staff_member_post_type');
 
 
+// Disable the block editor
 function disable_block_editor_for_staff_member($use_block_editor, $post_type) {
     if ($post_type === 'staff_member') {
         return false;
@@ -42,7 +42,20 @@ function disable_block_editor_for_staff_member($use_block_editor, $post_type) {
 }
 add_filter('use_block_editor_for_post_type', 'disable_block_editor_for_staff_member', 10, 2);
 
+// Remove the slug meta box
 function remove_slug_meta_box() {
     remove_meta_box('slugdiv', 'staff_member', 'normal');
 }
 add_action('admin_menu', 'remove_slug_meta_box');
+
+// Define the single post template
+function msmp_custom_single_template($template) {
+    if (is_singular('staff_member')) {
+        $new_template = MSMP_PLUGIN_DIR . 'templates/single-staff_member.php';
+        if (file_exists($new_template)) {
+            return $new_template;
+        }
+    }
+    return $template;
+}
+add_filter('template_include', 'msmp_custom_single_template');

@@ -6,7 +6,7 @@ export const useStaffStore = defineStore({
     staffInfo: {
       fullName: "",
       jobTitle: "",
-      emailAddress: "",
+      email: "",
       officePhone: "",
       cellPhone: "",
       about: "",

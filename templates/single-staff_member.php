@@ -23,10 +23,20 @@ get_header();
         <div class="staff_information">
             <?php
             // Start the loop.
-            while (have_posts()) {
+            /* while (have_posts()) {
                 the_post();
                 $post_content = get_the_content();
                 $parsed_data = json_decode($post_content, true);
+
+
+                // Get the preview content
+                $preview_content = get_the_content();
+
+                // Apply the necessary filters to the content
+                $filtered_content = apply_filters('the_content', $post_content);
+
+                // Output the preview content
+                echo $filtered_content;
 
                 $fullName = $parsed_data['fullName'];
                 $jobTitle = $parsed_data['jobTitle'];
@@ -72,7 +82,13 @@ get_header();
                     echo '</div>';
                 }
             }
-            // End the loop.
+            // End the loop. */
+
+
+         $post_status = get_post_status();
+        echo 'Post Status: ' . $post_status;
+        the_content();
+        
             ?>
         </div>
     </main><!-- #main -->

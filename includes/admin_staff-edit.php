@@ -28,12 +28,25 @@ function staff_meta_box_callback($post) {
     // Retrieve the post content value
     $staff_post_content = isset($post) ? $post->post_content : '';
     ?>
-<!-- Add this hidden input field in your custom meta box -->
+
+<!-- Add this hidden input field -->
 <input type="hidden" id="staff_post_content" name="staff_post_content"
     value="<?php echo esc_attr($staff_post_content); ?>" ref="postContentInput" />
 <div id="admin_staff-edit-app"></div>
+
 <?php
 }
+
+function autosave_and_preview_post_content($data, $postarr) {
+    $staff_post_content = get_post_meta( $postarra['ID'], 'staff_meta_box', true);
+    $data['post_content'] .= $staff_post_content;
+
+    return $data;
+}
+
+add_filter('autosave_post', 'autosave_and_preview_post_content', 10, 2);
+add_filter('wp_preview_post_data', 'autosave_and_preview_post_content', 10, 2);
+
 
 function staff_update_post_content($data, $postarr) {
     // Check if the staff_post_content field is set and the post type is your custom post type
@@ -43,5 +56,6 @@ function staff_update_post_content($data, $postarr) {
     }
     return $data;
 }
+
 add_filter('wp_insert_post_data', 'staff_update_post_content', 10, 2);
 ?>
