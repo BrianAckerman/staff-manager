@@ -23,7 +23,7 @@ require_once MSMP_PLUGIN_DIR . 'includes/database.php';
 require_once MSMP_PLUGIN_DIR . 'includes/staff-members-admin.php';
 
 // Include the files that define custom post types, meta boxes, and shortcodes
-require_once MSMP_PLUGIN_DIR . 'includes/custom-post-types.php';
+require_once MSMP_PLUGIN_DIR . 'includes/custom-post-type.php';
 require_once MSMP_PLUGIN_DIR . 'includes/admin_staff-edit.php';
 require_once MSMP_PLUGIN_DIR . 'includes/admin_staff-meta.php';
 require_once MSMP_PLUGIN_DIR . 'includes/shortcode.php';
