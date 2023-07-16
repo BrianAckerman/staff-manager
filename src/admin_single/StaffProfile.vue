@@ -42,18 +42,9 @@ export default {
 
 <template>
   <div class="staff-member-form">
-    <ul>
-      <li v-for="(link, index) in socialLinks" :key="index">
-        <a :href="link.url">{{ link.type }}</a>
-      </li>
-    </ul>
     <div>
-      <label for="first_name">First Name:</label>
-      <input type="text" id="first_name" v-model="staffInfo.firstName" />
-    </div>
-    <div>
-      <label for="last_name">Last Name:</label>
-      <input type="text" id="last_name" v-model="staffInfo.lastName" />
+      <label for="full_name">Full Name:</label>
+      <input type="text" id="full_name" v-model="staffInfo.fullName" />
     </div>
     <div>
       <label for="job_title">Job Title:</label>
@@ -61,40 +52,31 @@ export default {
     </div>
     <div>
       <label for="email">Email Address:</label>
-      <input type="email" id="email" v-model="staffInfo.emailAddress" />
+      <input
+        type="email"
+        id="email"
+        placeholder="yourname@example.com"
+        v-model="staffInfo.email"
+      />
     </div>
     <div>
-      <label for="phone_number">Phone Number:</label>
-      <input type="text" id="phone_number" v-model="staffInfo.phoneNumber" />
+      <label for="phone_number">Office Phone:</label>
+      <input
+        type="tel"
+        id="phone_number"
+        placeholder="(555) 123-4567"
+        v-model="staffInfo.officePhone"
+      />
     </div>
     <div>
-      <label for="bio">Bio/Description:</label>
-      <textarea id="bio" v-model="staffInfo.bio"></textarea>
+      <label for="phone_number">Cell Phone:</label>
+      <input type="tel" id="phone_number" v-model="staffInfo.cellPhone" />
     </div>
-    <div>
-      <label for="department">Department/Division:</label>
-      <input type="text" id="department" v-model="staffInfo.department" />
-    </div>
-    <div>
-      <label for="hire_date">Hire Date:</label>
-      <input type="date" id="hire_date" v-model="staffInfo.hireDate" />
-    </div>
-    <div>
-      <label for="work_location">Work Location:</label>
-      <input type="text" id="work_location" v-model="staffInfo.workLocation" />
-    </div>
-    <div>
-      <label for="skills">Skills/Expertise:</label>
-      <textarea id="skills" v-model="staffInfo.skills"></textarea>
-    </div>
-    <div>
-      <label for="education">Education:</label>
-      <textarea id="education" v-model="staffInfo.education"></textarea>
-    </div>
-    <div>
-      <label for="awards">Awards/Recognition:</label>
-      <textarea id="awards" v-model="staffInfo.awards"></textarea>
-    </div>
+    <quill-editor
+      theme="snow"
+      v-model:content="staffInfo.about"
+      contentType="html"
+    ></quill-editor>
   </div>
 </template>
 

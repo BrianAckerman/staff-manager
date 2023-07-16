@@ -1,0 +1,16 @@
+/* Set the width of the featured_image column */
+#featured_image.manage-column {
+    width: 100px;
+}
+
+    .featured_image.column-featured_image img {
+        border-radius: 50px;
+    }
+
+    .featured_image.column-featured_image::before {
+        display: none !important;
+    }
+
+#last_modified.manage-column {
+    width:150px;
+}
