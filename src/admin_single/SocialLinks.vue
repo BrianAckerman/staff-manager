@@ -1,13 +1,16 @@
 <template>
-  <div v-if="!view || staffInfo.staffLinks.length < 1" class="msmp_staff-links">
+  <div
+    v-if="!view || staffInfo.staffLinks.length < 1"
+    class="staffh_staff-links"
+  >
     <form @submit.prevent="save">
-      <div class="msmp_form-group">
+      <div class="staffh_form-group">
         <label for="link-type">Network or Website:</label>
         <select
           name="link-type"
           v-model="activeLink.type"
           required
-          class="msmp_form-control"
+          class="staffh_form-control"
         >
           <option value="">- Select -</option>
           <option value="Facebook">Facebook</option>
@@ -18,22 +21,24 @@
           <option value="other">Other</option>
         </select>
       </div>
-      <div class="msmp_form-group">
+      <div class="staffh_form-group">
         <label for="link-url">Link:</label>
         <input
           type="url"
           name="link-url"
           required
           v-model="activeLink.url"
-          class="msmp_form-control"
+          class="staffh_form-control"
         />
       </div>
       <div>
-        <button type="submit" class="msmp_btn msmp_btn-primary">Save</button>
+        <button type="submit" class="staffh_btn staffh_btn-primary">
+          Save
+        </button>
         <button
           @click="cancel"
           type="reset"
-          class="msmp_btn msmp_btn-secondary"
+          class="staffh_btn staffh_btn-secondary"
           v-if="staffInfo.staffLinks.length > 0"
         >
           Cancel
@@ -41,12 +46,12 @@
       </div>
     </form>
   </div>
-  <div v-else class="msmp_staff-links">
-    <ul class="msmp_social-links-list">
+  <div v-else class="staffh_staff-links">
+    <ul class="staffh_social-links-list">
       <li
         v-for="(link, index) in staffInfo.staffLinks"
         :key="index"
-        class="msmp_social-link-item"
+        class="staffh_social-link-item"
       >
         <span
           :class="
@@ -54,15 +59,18 @@
           "
           >{{ link.type }} {{ link.url }}</span
         >
-        <button @click.prevent="edit(index)" class="msmp_btn msmp_btn-link">
+        <button @click.prevent="edit(index)" class="staffh_btn staffh_btn-link">
           Edit
         </button>
-        <button @click.prevent="remove(index)" class="msmp_btn msmp_btn-link">
+        <button
+          @click.prevent="remove(index)"
+          class="staffh_btn staffh_btn-link"
+        >
           Delete
         </button>
       </li>
     </ul>
-    <button class="msmp_btn msmp_btn-secondary" @click.prevent="this.new">
+    <button class="staffh_btn staffh_btn-secondary" @click.prevent="this.new">
       New
     </button>
   </div>
@@ -141,67 +149,67 @@ export default {
 </script>
 
 <style scoped>
-.msmp_staff-links {
+.staffh_staff-links {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-.msmp_social-links-list {
+.staffh_social-links-list {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.msmp_social-link-item {
+.staffh_social-link-item {
   margin: 0;
   padding: 5px 0;
   display: flex;
   justify-content: space-between;
 }
 
-.msmp_social-link-item span {
+.staffh_social-link-item span {
   flex-grow: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.msmp_btn-link span {
+.staffh_btn-link span {
   font-size: 16px;
   color: #9a9a9a;
 }
 
-.msmp_btn-link span:hover {
+.staffh_btn-link span:hover {
   color: #343434;
 }
 
-.msmp_btn {
+.staffh_btn {
   cursor: pointer;
 }
 
-.msmp_btn-link {
+.staffh_btn-link {
   padding: 0 0 0 0.5em;
   background: none;
   border: 0 none;
   text-decoration: underline;
 }
 
-.msmp_btn-link:hover {
+.staffh_btn-link:hover {
   color: #135e96;
 }
 
-.msmp_form-group label {
+.staffh_form-group label {
   display: block;
   margin-top: 1em;
   margin-bottom: 0.25em;
   line-height: 1.25;
 }
 
-.msmp_form-control {
+.staffh_form-control {
   width: 100%;
 }
 
-.msmp_btn-primary {
+.staffh_btn-primary {
   display: inline-block;
   text-decoration: none;
   font-size: 13px;
@@ -221,13 +229,13 @@ export default {
   background: #2271b1;
 }
 
-.msmp_btn-primary:hover {
+.staffh_btn-primary:hover {
   background: #135e96;
   border-color: #135e96;
   color: #fff;
 }
 
-.msmp_btn-secondary {
+.staffh_btn-secondary {
   display: inline-block;
   text-decoration: none;
   font-size: 13px;
@@ -247,7 +255,7 @@ export default {
   background: #f6f7f7;
 }
 
-.msmp_btn-secondary:hover {
+.staffh_btn-secondary:hover {
   background: #f0f0f1;
   border-color: #0a4b78;
   color: #0a4b78;

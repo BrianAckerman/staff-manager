@@ -2,8 +2,9 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
-import staffProfile from "./ManageStaffProfile.vue";
-import staffLinks from "./ManageStaffSocial.vue";
+import staffProfile from "./StaffProfile.vue";
+import socialLinks from "./SocialLinks.vue";
+import staffContactAssociations from "./StaffContactAssociations.vue";
 import "../assets/core.css";
 
 const store = createPinia();
@@ -16,4 +17,9 @@ const createAndMountApp = (component, mountPoint, store) => {
 };
 
 createAndMountApp(staffProfile, "#admin_staff-edit-app", store);
-createAndMountApp(staffLinks, "#social-links-app", store);
+createAndMountApp(socialLinks, "#social-links-app", store);
+createAndMountApp(
+  staffContactAssociations,
+  "#quick-contact-associations",
+  store
+);

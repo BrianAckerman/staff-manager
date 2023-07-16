@@ -52,11 +52,21 @@ export default {
     </div>
     <div>
       <label for="email">Email Address:</label>
-      <input type="email" id="email" v-model="staffInfo.email" />
+      <input
+        type="email"
+        id="email"
+        placeholder="yourname@example.com"
+        v-model="staffInfo.email"
+      />
     </div>
     <div>
       <label for="phone_number">Office Phone:</label>
-      <input type="tel" id="phone_number" v-model="staffInfo.officePhone" />
+      <input
+        type="tel"
+        id="phone_number"
+        placeholder="(555) 123-4567"
+        v-model="staffInfo.officePhone"
+      />
     </div>
     <div>
       <label for="phone_number">Cell Phone:</label>

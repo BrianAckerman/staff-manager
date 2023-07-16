@@ -5,47 +5,47 @@ function staff_members_plugin_menu() {
 
     // Add custom Staff Members menu item with submenus
     add_menu_page(
-        'My Staff Members Plugin',
-        'Staff Members',
-        'manage_options',
-        'manage-staff',
-        'staff_members_plugin_page',
-        'dashicons-id',
-        20
+        'My Staff Members Plugin',      // Page title
+        'Staff Members',                // Menu title
+        'manage_options',               // Required capability
+        'manage-staff',                 // Menu slug
+        'staff_members_plugin_page',    // Callback function
+        'dashicons-id',                 // Menu icon
+        20                              // Menu position
     );
 
     add_submenu_page(
-        'manage-staff',
-        'Add New Staff Member',
-        'Add New',
-        'manage_options',
-        'post-new.php?post_type=staff_member'
+        'manage-staff',                         // Parent menu slug
+        'Add New Staff Member',                 // Page title
+        'Add New',                              // Menu title
+        'manage_options',                       // Required capability
+        'post-new.php?post_type=staff_member'   // Submenu slug
     );
 
     add_submenu_page(
-        'manage-staff',
-        'All Staff Members',
-        'All Staff Members',
-        'manage_options',
-        'edit.php?post_type=staff_member'
+        'manage-staff',                     // Parent menu slug
+        'All Staff Members',                // Page title
+        'All Staff Members',                // Menu title
+        'manage_options',                   // Required capability
+        'edit.php?post_type=staff_member'   // Submenu slug
     );
 
     add_submenu_page(
-        'manage-staff',
-        'Options',
-        'Options',
-        'manage_options',
-        'staff-options',
-        'staff_manager_options'
+        'manage-staff',                 // Parent menu slug
+        'Options',                      // Page title
+        'Options',                      // Menu title
+        'manage_options',               // Required capability
+        'staff-options',                // Submenu slug
+        'staff_manager_options'         // Callback function
     );
 
     add_submenu_page(
-        'manage-staff',
-        'Quick Contacts',
-        'Quick Contacts',
-        'manage_options',
-        'staff_manager_quick_contacts',
-        'staff_manager_quick-contacts'
+        'manage-staff',                  // Parent menu slug
+        'Quick Contacts',                // Page title
+        'Quick Contacts',                // Menu title
+        'manage_options',                // Required capability
+        'staff_manager_quick_contacts',  // Submenu slug
+        'staff_manager_quick_contacts'   // Callback function
     );
 }
 add_action( 'admin_menu', 'staff_members_plugin_menu' );
@@ -53,17 +53,17 @@ add_action( 'admin_menu', 'staff_members_plugin_menu' );
 function staff_manager_enqueue_scripts($hook_suffix) {
     // Check if the current page is the list page
    if ($hook_suffix !== 'toplevel_page_manage-staff') {
-        wp_enqueue_style('staff-admin-list-stylesheet', MSMP_PLUGIN_URL . 'css/admin-list.css', array(), '1.0');
+        wp_enqueue_style('staff-admin-list-stylesheet', STAFFH_PLUGIN_URL . 'css/admin-list.css', array(), '1.0');
         return;
     }
     
     // Enqueue scripts and styles
     wp_enqueue_script( 'vue', 'https://unpkg.com/vue@3/dist/vue.global.js', array(), '1.0');
-    wp_enqueue_script('msmp-script', MSMP_PLUGIN_URL . 'dist/staff-list-bundle.js', array('vue'), '1.0', true);
-    wp_enqueue_style('msmp-style', MSMP_PLUGIN_URL . 'dist/staff-list-bundle.css', array(), '1.0');
+    wp_enqueue_script('staffh_script', STAFFH_PLUGIN_URL . 'dist/staff-list-bundle.js', array('vue'), '1.0', true);
+    wp_enqueue_style('staffh_style', STAFFH_PLUGIN_URL . 'dist/staff-list-bundle.css', array(), '1.0');
     
     // Localize user capability
-    wp_localize_script('msmp-script', 'wpData', array(
+    wp_localize_script('staffh_script', 'wpData', array(
         'nonce' => wp_create_nonce('wp_rest'),
         'canEditPosts' => current_user_can('edit_posts')
     ));

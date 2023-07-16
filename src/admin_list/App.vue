@@ -60,7 +60,7 @@ export default {
     },
     async fetchPostCounts() {
       try {
-        const response = await fetch("/wp-json/staff-members/v1/counts/", {
+        const response = await fetch("/wp-json/staff-hero/v1/counts/", {
           headers: {
             "X-WP-Nonce": wpData.nonce,
           },
@@ -92,7 +92,7 @@ export default {
             : "publish";
 
         const response = await fetch(
-          `/wp-json/staff-members/v1/staff-members/${item.id}`,
+          `/wp-json/staff-hero/v1/staff-members/${item.id}`,
           {
             method: "POST",
             headers: {
@@ -120,7 +120,7 @@ export default {
     async moveToTrash(item) {
       try {
         const response = await fetch(
-          `/wp-json/staff-members/v1/staff-members/${item.id}`,
+          `/wp-json/staff-hero/v1/staff-members/${item.id}`,
           {
             method: "POST",
             headers: {

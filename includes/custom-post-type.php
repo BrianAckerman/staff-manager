@@ -1,19 +1,19 @@
 <?php
 // Register the "staff_member" custom post type
-function msmp_register_staff_member_post_type()
+function staffh_register_staff_member_post_type()
 {
     $labels = array(
-        'name'               => __('Staff Members', 'msmp'),
-        'singular_name'      => __('Staff Member', 'msmp'),
-        'add_new'            => __('Add New', 'msmp'),
-        'add_new_item'       => __('Add New Staff Member', 'msmp'),
-        'edit_item'          => __('Edit Staff Member', 'msmp'),
-        'new_item'           => __('New Staff Member', 'msmp'),
-        'view_item'          => __('View Staff Member', 'msmp'),
-        'search_items'       => __('Search Staff Members', 'msmp'),
-        'not_found'          => __('No staff members found', 'msmp'),
-        'not_found_in_trash' => __('No staff members found in trash', 'msmp'),
-        'menu_name'          => __('Staff Members', 'msmp'),
+        'name'               => __('Staff Members', 'staffh'),
+        'singular_name'      => __('Staff Member', 'staffh'),
+        'add_new'            => __('Add New', 'staffh'),
+        'add_new_item'       => __('Add New Staff Member', 'staffh'),
+        'edit_item'          => __('Edit Staff Member', 'staffh'),
+        'new_item'           => __('New Staff Member', 'staffh'),
+        'view_item'          => __('View Staff Member', 'staffh'),
+        'search_items'       => __('Search Staff Members', 'staffh'),
+        'not_found'          => __('No staff members found', 'staffh'),
+        'not_found_in_trash' => __('No staff members found in trash', 'staffh'),
+        'menu_name'          => __('Staff Members', 'staffh'),
     );
     $args = array(
         'labels'              => $labels,
@@ -31,7 +31,7 @@ function msmp_register_staff_member_post_type()
     register_post_type('staff_member', $args);
 }
 
-add_action('init', 'msmp_register_staff_member_post_type');
+add_action('init', 'staffh_register_staff_member_post_type');
 
 
 function disable_block_editor_for_staff_member($use_block_editor, $post_type) {

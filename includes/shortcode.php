@@ -17,8 +17,8 @@ function enqueue_archive_assets($posts) {
     // If the shortcode is found, enqueue the assets
     if ($shortcode_found) {
         wp_enqueue_script( 'vue', 'https://unpkg.com/vue@3/dist/vue.global.js', array(), '1.0');
-        wp_enqueue_script('archive_staff-bundle', MSMP_PLUGIN_URL . 'dist/archive_staff-bundle.js', array(), '1.0.0', true);
-        wp_enqueue_style('archive_staff-bundle', MSMP_PLUGIN_URL . 'dist/archive_staff-bundle.css', array(), '1.0.0');
+        wp_enqueue_script('archive_staff-bundle', STAFFH_PLUGIN_URL . 'dist/archive_staff-bundle.js', array(), '1.0.0', true);
+        wp_enqueue_style('archive_staff-bundle', STAFFH_PLUGIN_URL . 'dist/archive_staff-bundle.css', array(), '1.0.0');
     }
 
     return $posts;
@@ -27,14 +27,14 @@ add_filter('the_posts', 'enqueue_archive_assets');
 
 
 // Register the [staff_archive] shortcode
-function msmp_register_staff_members_shortcode()
+function staffh_register_staff_members_shortcode()
 {
-    add_shortcode('staff_archive', 'msmp_render_staff_members_shortcode');
+    add_shortcode('staff_archive', 'staffh_render_staff_members_shortcode');
 }
-add_action('init', 'msmp_register_staff_members_shortcode');
+add_action('init', 'staffh_register_staff_members_shortcode');
 
 // Render the [staff_archive] shortcode
-function msmp_render_staff_members_shortcode($atts)
+function staffh_render_staff_members_shortcode($atts)
 {
       // Fetch all staff posts
   $args = array(

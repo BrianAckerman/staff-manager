@@ -1,6 +1,6 @@
 {
     "scripts": {
-        "build": "npm --prefix src/admin-list run build && npm --prefix src/admin_staff-edit run build && npm --prefix src/archive_staff run build"
+        "build": "npm --prefix src/admin_list run build && npm --prefix src/admin_single run build && npm --prefix src/archive_staff run build && npm --prefix src/quickcontacts run build"
     },
     "dependencies": {
         "@vitejs/plugin-vue": "^4.2.1",

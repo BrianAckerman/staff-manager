@@ -2,7 +2,6 @@
 export default {
   data: function () {
     return {
-      title: "Hello World",
       staffData: [],
     };
   },
@@ -15,7 +14,6 @@ export default {
 </script>
 
 <template>
-  {{ title }}
   <ul class="two-col">
     <li v-for="(staff, index) in staffData" :key="index">
       <img
