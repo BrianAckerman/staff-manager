@@ -3,11 +3,18 @@
  * Template Name: Custom Staff Member Template
  */
 get_header();
+if (has_post_thumbnail()) {
+    $phone_col = '300px';
+}
+$quick_links = get_associated_quick_contacts($post_id);
+if(isset($quick_links) && is_array($quick_links) && !empty($quick_links)) {
+    $quick_links_col = '1fr';
+}
 ?>
 <style>
 .staff_member {
     display: grid;
-    grid-template-columns: 300px 1fr 1fr;
+    grid-template-columns: <?php echo $phone_col ?> 1fr <?php echo $quick_links_col ?>;
     gap: 2.5%;
 }
 </style>
@@ -25,9 +32,9 @@ get_header();
             // Start the loop.
             while (have_posts()) {
                 the_post();
+                $post_id = get_the_ID();
                 $post_content = get_the_content();
                 $parsed_data = json_decode($post_content, true);
-
                 $fullName = $parsed_data['fullName'];
                 $jobTitle = $parsed_data['jobTitle'];
                 $email = $parsed_data['email'];
@@ -53,7 +60,7 @@ get_header();
                     echo '<div class="staff_phone"><span class="staff_address_label">Cell: </span><a href="tel:' . $cellPhone . '">' . $cellPhone . '</a></div>';
                 }
                 if (isset($email)) {
-                    echo '<div class="staff_phone"><span class="staff_address_label">Email: </span><a href="mailto:' . $email . '">' . $email . '</a></div>';
+                    echo '<div class="staff_email"><span class="staff_address_label">Email: </span><a href="mailto:' . $email . '">' . $email . '</a></div>';
                 }
                 if (isset($staffLinks) && is_array($staffLinks)) {
                     echo '<div class="staff_social">';
@@ -75,7 +82,34 @@ get_header();
             // End the loop.
             ?>
         </div>
-    </main><!-- #main -->
+
+        <?php
+            if(isset($quick_links) && is_array($quick_links) && !empty($quick_links)) {
+                echo '<div>';
+                echo '<div class="quick-links">';
+                echo '<ul>';
+                foreach($quick_links as $link) {
+                    $id = $link['id'];
+                    $status = $link['status'];
+                    // Only active quick contacts
+                    if($status) {
+                        $name = $link['name'];
+                        $title = $link['title'];
+                        $phone = $link['phone'];
+                        echo '<li>';
+                        echo '<h4>' . $name . '</h4>';
+                        echo '<h5>' . $title . '</h5>';
+                        echo '<p><a href="tel:' . $phone . '">' . $phone . '</a>';
+                        echo '</li>';
+                    }
+                }
+                echo '</ul>';
+                echo '</div>';
+                echo '</div>';
+            }
+        ?>
+</div>
+</main><!-- #main -->
 </div><!-- #primary -->
 
 <?php get_footer(); ?>

@@ -105,7 +105,7 @@ function get_associated_quick_contacts($post_id) {
 }
 
 
-// Get a quick contat by its ID
+// Get a quick contact by its ID
 function get_quick_contact_by_id($contact_id) {
     global $wpdb;
     $table_name = $wpdb->prefix . 'staffh_quickcontacts';
