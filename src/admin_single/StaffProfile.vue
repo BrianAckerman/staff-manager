@@ -1,9 +1,11 @@
 <script>
 import { mapWritableState } from "pinia";
 import { useStaffStore } from "./stores/staffMember";
+import { vMaska } from "maska";
 
 export default {
   name: "admin_staff-edit",
+  directives: { maska: vMaska },
   data: function () {
     return {
       title: "Staff Information",
@@ -66,11 +68,20 @@ export default {
         id="phone_number"
         placeholder="(555) 123-4567"
         v-model="staffInfo.officePhone"
+        v-maska
+        data-maska="(###) ###-####"
       />
     </div>
     <div>
       <label for="phone_number">Cell Phone:</label>
-      <input type="tel" id="phone_number" v-model="staffInfo.cellPhone" />
+      <input
+        type="tel"
+        id="phone_number"
+        placeholder="(555) 123-4567"
+        v-model="staffInfo.cellPhone"
+        v-maska
+        data-maska="(###) ###-####"
+      />
     </div>
     <quill-editor
       theme="snow"

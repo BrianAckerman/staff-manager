@@ -57,6 +57,8 @@
               id="phone"
               placeholder="(555) 123-4567"
               v-model="temporaryContact.phone"
+              v-maska
+              data-maska="(###) ###-####"
               required
             />
           </div>
@@ -85,9 +87,11 @@
 
 <script>
 import TagInput from "./TagInput.vue";
+import { vMaska } from "maska";
 
 export default {
   name: "Modal",
+  directives: { maska: vMaska },
   components: {
     TagInput,
   },

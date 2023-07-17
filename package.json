@@ -5,6 +5,7 @@
     "dependencies": {
         "@vitejs/plugin-vue": "^4.2.1",
         "@vueup/vue-quill": "^1.2.0",
+        "maska": "^2.1.9",
         "mitt": "^3.0.0",
         "pinia": "^2.0.35",
         "vite": "^4.3.3",
