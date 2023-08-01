@@ -5,15 +5,15 @@ function create_staff_meta_box() {
     add_meta_box(
         'staff_meta_box',                           // Unique ID
         'Staff Member Information',                 // Box title
-        'staff_profile_callback',                  // Content callback
+        'staff_profile_callback',                   // Content callback
         'staff_member',                             // Post type
         'normal',                                   // Context
         'high'                                      // Priority
     );
     add_meta_box(
-        'staffh_social_meta_box',                   // Unique ID
-        'Social',                                   // Box title
-        'staffh_social_meta_box',                   // Content callback
+        'staffh_calls_to_action_box',               // Unique ID
+        'Calls to Action',                          // Box title
+        'staffh_calls_to_action_meta_box',          // Content callback
         'staff_member',                             // Post type
         'side',                                     // Context
         'default'                                   // Priority
@@ -22,6 +22,14 @@ function create_staff_meta_box() {
         'staffh_quick_contacts_box',                // Unique ID
         'Quick Contacts',                           // Box title
         'staffh_quick_contacts_meta_box',           // Content callback
+        'staff_member',                             // Post type
+        'side',                                     // Context
+        'default'                                   // Priority
+    );
+    add_meta_box(
+        'staffh_social_meta_box',                   // Unique ID
+        'Social Links',                             // Box title
+        'staffh_social_meta_box',                   // Content callback
         'staff_member',                             // Post type
         'side',                                     // Context
         'default'                                   // Priority
@@ -62,9 +70,14 @@ function staff_profile_callback($post) {
 <?php
 }
 
+function staffh_calls_to_action_meta_box($post) {
+    // Add a placeholder element for the Social Links Vue app
+     echo '<div id="staffh_calls-to-action-app"></div>';
+}
+
 function staffh_social_meta_box($post) {
     // Add a placeholder element for the Social Links Vue app
-     echo '<div id="social-links-app"><social-links></social-links></div>';
+     echo '<div id="staffh_social-links-app"></div>';
 }
 
 function staffh_quick_contacts_meta_box($post) {

@@ -12,6 +12,7 @@ export const useStaffStore = defineStore({
       about: "",
       isQuickContact: false,
       staffLinks: [],
+      callsToAction: [],
     },
     post: null,
     loading: false,

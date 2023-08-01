@@ -4,6 +4,7 @@ import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import staffProfile from "./StaffProfile.vue";
 import socialLinks from "./SocialLinks.vue";
+import callsToAction from "./StaffCallsToAction.vue";
 import staffContactAssociations from "./StaffContactAssociations.vue";
 import "../assets/core.css";
 
@@ -17,7 +18,8 @@ const createAndMountApp = (component, mountPoint, store) => {
 };
 
 createAndMountApp(staffProfile, "#admin_staff-edit-app", store);
-createAndMountApp(socialLinks, "#social-links-app", store);
+createAndMountApp(socialLinks, "#staffh_social-links-app", store);
+createAndMountApp(callsToAction, "#staffh_calls-to-action-app", store);
 createAndMountApp(
   staffContactAssociations,
   "#quick-contact-associations",

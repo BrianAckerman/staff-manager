@@ -46,15 +46,31 @@ function get_icon_file_name($link_type) {
     height: 30px;
 }
 
-.staffh_quick-links ul {
+.staffh_calls-to-action {
+    margin-bottom: 1em;
+    padding-bottom: 1em;
+    border-bottom: solid 1px;
+}
+
+.staffh_quick-links ul,
+.staffh_calls-to-action ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-
 .staffh_quick-links li {
     margin-bottom: 1em;
+}
+
+.staffh_calls-to-action a[role="button"] {
+    display: block;
+    padding: 1.25em 10px;
+    background: #ccc;
+    margin-bottom: 2px;
+    text-align: center;
+    line-height: 1.2;
+    text-decoration: none;
 }
 
 .staffh_quick-links h4 {
@@ -158,6 +174,13 @@ function get_icon_file_name($link_type) {
                     $staffLinks = array(); // or null if you prefer
                 }
 
+                // Check and set callsToAction
+                if (isset($parsed_data['callsToAction'])) {
+                    $callsToAction = $parsed_data['callsToAction'];
+                } else {
+                    $callsToAction = array(); // or null if you prefer
+                }
+
 
                 echo '<h1>';
                 if (isset($fullName)) {
@@ -187,7 +210,7 @@ function get_icon_file_name($link_type) {
                         // Now, $icon_file_name contains the correct filename, based on the link type.
                         // You can use it to generate the img tag for the icon.
                         $img_url = plugins_url('../img/' . $icon_file_name, __FILE__);
-                        echo '<li><a href="' . esc_url($url) . '">';
+                        echo '<li><a href="' . esc_url($url) . '" target="_blank">';
                         echo '<img src="' . esc_url($img_url) . '" alt="' . esc_attr($type) . '" height="25px" />';
                         echo '</a></li>';
                     }
@@ -205,30 +228,52 @@ function get_icon_file_name($link_type) {
         </div>
 
         <?php
-            if(isset($quick_links) && is_array($quick_links) && !empty($quick_links)) {
+            if ((isset($callsToAction) && is_array($callsToAction)) || (isset($quick_links) && is_array($quick_links) && !empty($quick_links))) {
                 echo '<div>';
-                echo '<div class="staffh_quick-links">';
-                echo '<h3>Quick Contacts</h3>';
-                echo '<ul>';
-                foreach($quick_links as $link) {
-                    $id = $link['id'];
-                    $status = $link['status'];
-                    // Only active quick contacts
-                    if($status) {
-                        $name = $link['name'];
-                        $title = $link['title'];
-                        $phone = $link['phone'];
-                        $email = $link['email'];
+
+                if (isset($callsToAction) && is_array($callsToAction)) {
+                    echo '<div class="staffh_calls-to-action">';
+                    echo '<ul>';
+                    foreach ($callsToAction as $button) {
+                        $type = $button['type'];
+                        $url = $button['url'];
+                        $label = $button['label'];
+
                         echo '<li>';
-                        echo '<h4>' . $title . '</h4>';
-                        echo '<h5>' . $name . '</h5>';
-                        echo '<p><a href="tel:' . $phone . '">' . $phone . '</a>';
-                        echo '<p><a href="mailto:' . $email . '">' . $email . '</a>';
+                        echo '<a role="button" href="' . esc_url($url) . '" class="' . esc_attr($type) . '">';
+                        echo '<span>' . esc_attr($label) . '</span>';
+                        echo '</a>';
                         echo '</li>';
                     }
+                    echo '</ul>';
+                    echo '</div>';
                 }
-                echo '</ul>';
-                echo '</div>';
+
+                if(isset($quick_links) && is_array($quick_links) && !empty($quick_links)) {
+                    echo '<div class="staffh_quick-links">';
+                    echo '<h3>Quick Contacts</h3>';
+                    echo '<ul>';
+                    foreach($quick_links as $link) {
+                        $id = $link['id'];
+                        $status = $link['status'];
+                        // Only active quick contacts
+                        if($status) {
+                            $name = $link['name'];
+                            $title = $link['title'];
+                            $phone = $link['phone'];
+                            $email = $link['email'];
+                            echo '<li>';
+                            echo '<h4>' . $title . '</h4>';
+                            echo '<h5>' . $name . '</h5>';
+                            echo '<p><a href="tel:' . $phone . '">' . $phone . '</a>';
+                            echo '<p><a href="mailto:' . $email . '">' . $email . '</a>';
+                            echo '</li>';
+                        }
+                    }
+                    echo '</ul>';
+                    echo '</div>';
+                }
+
                 echo '</div>';
             }
         ?>
