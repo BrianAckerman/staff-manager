@@ -2,18 +2,25 @@
 // Register the "staff_member" custom post type
 function staffh_register_staff_member_post_type()
 {
+
+    // Get the slug from the settings page or use the default 'staff-members'
+    $slug = get_option('staffh_archive_slug', 'staff-members');
+
+    // Register the post type with the 'has_archive' parameter based on the settings
+    $has_archive = get_option('staffh_disable_archive_page', 0);
+
     $labels = array(
-        'name'               => __('Staff Members', 'staffh'),
-        'singular_name'      => __('Staff Member', 'staffh'),
+        'name'               => __('Staff', 'staffh'),
+        'singular_name'      => __('Staff', 'staffh'),
         'add_new'            => __('Add New', 'staffh'),
         'add_new_item'       => __('Add New Staff Member', 'staffh'),
         'edit_item'          => __('Edit Staff Member', 'staffh'),
         'new_item'           => __('New Staff Member', 'staffh'),
         'view_item'          => __('View Staff Member', 'staffh'),
         'search_items'       => __('Search Staff Members', 'staffh'),
-        'not_found'          => __('No staff members found', 'staffh'),
-        'not_found_in_trash' => __('No staff members found in trash', 'staffh'),
-        'menu_name'          => __('Staff Members', 'staffh'),
+        'not_found'          => __('No staff Found', 'staffh'),
+        'not_found_in_trash' => __('No staff found in trash', 'staffh'),
+        'menu_name'          => __('Staff', 'staffh'),
     );
     $args = array(
         'labels'              => $labels,
@@ -21,14 +28,17 @@ function staffh_register_staff_member_post_type()
         'publicly_queryable'  => true,
         'show_ui'             => true,
         'menu_icon'           => 'dashicons-groups',
-        'rewrite'             => array('slug' => 'staff-members'),
+        'rewrite' => array(
+            'slug' => $slug,
+            'with_front' => false,
+        ),
         'supports'            => array('title', 'thumbnail', 'revisions'),
-        'has_archive'         => true,
+        'has_archive'         => $has_archive,
         'show_in_rest'        => true,
         'rest_base'           => 'staff-members',
         'rest_controller_class' => 'WP_REST_Posts_Controller',
     );
-    register_post_type('staff_member', $args);
+    register_post_type('staff_member', $args);  
 }
 
 add_action('init', 'staffh_register_staff_member_post_type');

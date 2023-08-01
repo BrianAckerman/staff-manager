@@ -1,6 +1,6 @@
 <?php
 
-function staff_manager_quick_contacts() {
+function staffh_quick_contacts() {
     // Enqueue scripts and styles
     wp_enqueue_script('vue', 'https://unpkg.com/vue@3/dist/vue.global.js', array(), '3.2.21', true);
     wp_enqueue_script('staffh_script', STAFFH_PLUGIN_URL . 'dist/admin_quickcontacts.js', array('vue'), '1.0', true);

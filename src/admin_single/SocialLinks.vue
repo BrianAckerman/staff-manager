@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-if="!view || staffInfo.staffLinks.length < 1"
-    class="staffh_staff-links"
-  >
+  <div v-if="!view || !hasStaffLinks" class="staffh_staff-links">
     <form @submit.prevent="save">
       <div class="staffh_form-group">
         <label for="link-type">Network or Website:</label>
@@ -15,7 +12,7 @@
           <option value="">- Select -</option>
           <option value="Facebook">Facebook</option>
           <option value="Instagram">Instagram</option>
-          <option value="Twitter">Twitter</option>
+          <option value="𝕏">𝕏</option>
           <option value="LinkedIn">LinkedIn</option>
           <option value="YouTube">YouTube</option>
           <option value="other">Other</option>
@@ -39,7 +36,7 @@
           @click="cancel"
           type="reset"
           class="staffh_btn staffh_btn-secondary"
-          v-if="staffInfo.staffLinks.length > 0"
+          v-if="hasStaffLinks"
         >
           Cancel
         </button>
@@ -52,17 +49,27 @@
         v-for="(link, index) in staffInfo.staffLinks"
         :key="index"
         class="staffh_social-link-item"
+        :class="typeof link.type !== 'undefined' ? link.type.toLowerCase() : ''"
+        :title="link.url"
       >
-        <span
-          :class="
-            typeof link.type !== 'undefined' ? link.type.toLowerCase() : ''
-          "
-          >{{ link.type }} {{ link.url }}</span
+        <span class="icon">
+          <img
+            :src="iconBaseUrl + '/' + returnIconFileName(link.type)"
+            :alt="link.type"
+          />
+        </span>
+        <span>{{ link.url }}</span>
+        <button
+          role="button"
+          title="Edit"
+          @click.prevent="edit(index)"
+          class="staffh_btn staffh_btn-link"
         >
-        <button @click.prevent="edit(index)" class="staffh_btn staffh_btn-link">
           Edit
         </button>
         <button
+          role="button"
+          title="Delete"
           @click.prevent="remove(index)"
           class="staffh_btn staffh_btn-link"
         >
@@ -86,19 +93,22 @@ export default {
       view: null,
       activeIndex: null,
       activeLink: {},
+      iconBaseUrl: wpData.staffh_img_url,
     };
   },
   computed: {
     ...mapWritableState(useStaffStore, {
       staffInfo: "staffInfo",
     }),
+    hasStaffLinks() {
+      if (this.staffInfo && this.staffInfo.staffLinks) {
+        return this.staffInfo.staffLinks.length > 0;
+      }
+      return false;
+    },
   },
   created() {
-    if (this.staffInfo.staffLinks.length > 0) {
-      this.view = true;
-    } else {
-      this.view = false;
-    }
+    this.view = Boolean(this.staffInfo?.staffLinks?.length);
   },
   methods: {
     new() {
@@ -114,7 +124,10 @@ export default {
       this.activeLink = this.staffInfo.staffLinks[index];
       this.view = false;
     },
-    save(event) {
+    save() {
+      if (!this.staffInfo.staffLinks) {
+        this.staffInfo.staffLinks = [];
+      }
       if (
         this.staffInfo.staffLinks[this.activeIndex] &&
         this.activeIndex !== null
@@ -122,15 +135,14 @@ export default {
         // Update an existing record
         this.staffInfo.staffLinks[this.activeIndex].type = this.activeLink.type;
         this.staffInfo.staffLinks[this.activeIndex].url = this.activeLink.url;
-        this.view = true;
       } else {
         // Push a new record
         this.staffInfo.staffLinks.push({
           type: this.activeLink.type,
           url: this.activeLink.url,
         });
-        this.view = true;
       }
+      this.view = true;
     },
     remove(index) {
       this.activeLink = {};
@@ -143,6 +155,17 @@ export default {
     },
     cancel() {
       this.view = true;
+    },
+    returnIconFileName(linkType) {
+      const iconMap = {
+        facebook: "facebook_logo.svg",
+        "𝕏": "twitx_logo.svg",
+        instagram: "instagram_logo.svg",
+        youtube: "youtube_logo.svg",
+        linkedin: "linkedin_logo.svg",
+      };
+
+      return iconMap[linkType.toLowerCase()] || "other-link_logo.svg"; // default_icon.svg is used when no match is found
     },
   },
 };
@@ -161,10 +184,13 @@ export default {
 }
 
 .staffh_social-link-item {
-  margin: 0;
-  padding: 5px 0;
+  margin: 0 0 2px;
+  padding: 5px 8px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  border-bottom: solid 1px #ccc;
 }
 
 .staffh_social-link-item span {
@@ -172,6 +198,17 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.staffh_social-link-item span.icon {
+  width: 22px;
+  margin-right: 8px;
+  flex-grow: 0;
+}
+
+.staffh_social-link-item span.icon img {
+  max-width: 100%;
+  vertical-align: middle;
 }
 
 .staffh_btn-link span {

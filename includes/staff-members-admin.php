@@ -5,48 +5,50 @@ function staff_members_plugin_menu() {
 
     // Add custom Staff Members menu item with submenus
     add_menu_page(
-        'My Staff Members Plugin',      // Page title
-        'Staff Members',                // Menu title
-        'manage_options',               // Required capability
-        'manage-staff',                 // Menu slug
-        'staff_members_plugin_page',    // Callback function
-        'dashicons-id',                 // Menu icon
-        20                              // Menu position
+        'Staff Hero Staff Manager',             // Page title
+        'Staff',                                // Menu title
+        'manage_options',                       // Required capability
+        'manage-staff',                         // Menu slug
+        'staff_members_plugin_page',            // Callback function
+        'dashicons-id',                         // Menu icon
+        20                                      // Menu position
     );
 
     add_submenu_page(
         'manage-staff',                         // Parent menu slug
-        'Add New Staff Member',                 // Page title
+        'All Staff',                            // Page title
+        'All Staff',                            // Menu title
+        'manage_options',                       // Required capability
+        'edit.php?post_type=staff_member'       // Submenu slug
+    );
+
+    add_submenu_page(
+        'manage-staff',                         // Parent menu slug
+        'Add New Staff',                        // Page title
         'Add New',                              // Menu title
         'manage_options',                       // Required capability
         'post-new.php?post_type=staff_member'   // Submenu slug
     );
 
     add_submenu_page(
-        'manage-staff',                     // Parent menu slug
-        'All Staff Members',                // Page title
-        'All Staff Members',                // Menu title
-        'manage_options',                   // Required capability
-        'edit.php?post_type=staff_member'   // Submenu slug
+        'manage-staff',                         // Parent menu slug
+        'Quick Contacts',                       // Page title
+        'Quick Contacts',                       // Menu title
+        'manage_options',                       // Required capability
+        'staffh_quick_contacts',                // Submenu slug
+        'staffh_quick_contacts'                 // Callback function
     );
 
     add_submenu_page(
-        'manage-staff',                 // Parent menu slug
-        'Options',                      // Page title
-        'Options',                      // Menu title
-        'manage_options',               // Required capability
-        'staff-options',                // Submenu slug
-        'staff_manager_options'         // Callback function
+    'manage-staff',                             // Parent menu slug
+        'Archive Settings',                     // Page title
+        'Archive Settings',                     // Menu title
+        'manage_options',                       // Required capability
+        'staffh-archive-settings',              // Submenu slug
+        'staffh_archive_settings'                       // Callback function
     );
 
-    add_submenu_page(
-        'manage-staff',                  // Parent menu slug
-        'Quick Contacts',                // Page title
-        'Quick Contacts',                // Menu title
-        'manage_options',                // Required capability
-        'staff_manager_quick_contacts',  // Submenu slug
-        'staff_manager_quick_contacts'   // Callback function
-    );
+    
 }
 add_action( 'admin_menu', 'staff_members_plugin_menu' );
 

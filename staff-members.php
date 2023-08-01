@@ -25,9 +25,10 @@ require_once STAFFH_PLUGIN_DIR . 'includes/staff-members-admin.php';
 // Include the files that define custom post types, meta boxes, and shortcodes
 require_once STAFFH_PLUGIN_DIR . 'includes/custom-post-type.php';
 require_once STAFFH_PLUGIN_DIR . 'includes/admin_single.php';
-require_once STAFFH_PLUGIN_DIR . 'includes/shortcode.php';
-require_once STAFFH_PLUGIN_DIR . 'includes/admin_options.php';
 require_once STAFFH_PLUGIN_DIR . 'includes/admin_quickcontacts.php';
+require_once STAFFH_PLUGIN_DIR . 'includes/admin_settings.php';
+require_once STAFFH_PLUGIN_DIR . 'includes/admin_settings-test.php';
+require_once STAFFH_PLUGIN_DIR . 'includes/shortcode.php';
 require_once STAFFH_PLUGIN_DIR . 'includes/rest.php';
 
 // Define single template

@@ -7,15 +7,15 @@ function create_staff_social_meta_box() {
     add_meta_box(
         'staffh_social_meta_box',                   // Unique ID
         'Social',                                   // Box title
-        'staffh_social_meta_box',          // Content callback
+        'staffh_social_meta_box',                   // Content callback
         'staff_member',                             // Post type
         'side',                                     // Context
         'default'                                   // Priority
     );
     add_meta_box(
         'staffh_quick_contacts_box',                // Unique ID
-        'QUick Contacts',                           // Box title
-        'staffh_quick_contacts_meta_box',  // Content callback
+        'Quick Contacts',                           // Box title
+        'staffh_quick_contacts_meta_box',           // Content callback
         'staff_member',                             // Post type
         'side',                                     // Context
         'default'                                   // Priority

@@ -36,6 +36,7 @@ function staff_profile_callback($post) {
     // Pass data to the Vue app
     $available_quick_contacts = fetch_quick_contacts_data(); // Fetch all available quick contacts
     $associated_quick_contacts = get_associated_quick_contacts($post->ID); // Fetch quick contacts associated with the post
+    $icons_base_url = plugins_url('../img', __FILE__);
 
     // Pass data to the Vue app
     wp_localize_script('staffh_staff-edit-script', 'wpData', array(
@@ -45,6 +46,8 @@ function staff_profile_callback($post) {
         'socialLinks' => get_post_meta($post->ID, 'social_links', true),
         'availableQuickContacts' => $available_quick_contacts,
         'associatedQuickContacts' => $associated_quick_contacts,
+        'staffh_img_url' => $icons_base_url
+
     ));
     
     // Retrieve the post content value
@@ -107,11 +110,10 @@ function staff_update_post_content($data, $postarr) {
     // Check if the staff_post_content field is set and the post type is your custom post type
     if (isset($_POST['staff_post_content']) && $data['post_type'] === 'staff_member') {
         // Update the post_content field with the staff_post_content value
-        $data['post_content'] = $_POST['staff_post_content'];
+        // $data['post_content'] = $_POST['staff_post_content'];
     } elseif (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE && $data['post_type'] === 'staff_member') {
         // Handle autosave: Retrieve the content from the appropriate source and update the post_content field
-        $content = $_POST['content']; 
-        $data['post_content'] = $_POST['staff_post_content'];
+        // $data['post_content'] = $_POST['staff_post_content'];
     }
     return $data;
 }

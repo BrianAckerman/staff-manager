@@ -18,13 +18,12 @@ export default {
   },
   mounted() {
     const staffStore = useStaffStore();
-
     // Retrieve the post content from the hidden input field
     const hidden = document.getElementById("staff_post_content");
-    const postContentJSON = hidden.value;
+    const postContentJSON = hidden?.value || "";
 
     // Parse the JSON string to a JavaScript object
-    const postContent = JSON.parse(postContentJSON);
+    const postContent = postContentJSON ? JSON.parse(postContentJSON) : {};
 
     // Update the post content in the Pinia store
     staffStore.setPostContent(postContent);
@@ -32,7 +31,7 @@ export default {
   watch: {
     staffInfo: {
       deep: true,
-      handler(newValue, oldValue) {
+      handler(newValue) {
         let hidden = document.getElementById("staff_post_content");
         hidden.value = JSON.stringify(newValue);
         // console.log("Staff Info changed:", newValue);
@@ -107,6 +106,12 @@ select {
   border-radius: 4px;
   font-size: 16px;
   margin-bottom: 20px;
+}
+
+::placeholder {
+  color: #b0b0b0;
+  font-weight: 300;
+  font-style: italic;
 }
 
 input[type="checkbox"] {
