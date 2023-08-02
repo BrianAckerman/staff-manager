@@ -12,7 +12,7 @@
           <option value="">- Select -</option>
           <option value="Facebook">Facebook</option>
           <option value="Instagram">Instagram</option>
-          <option value="𝕏">𝕏</option>
+          <option value="TwitterX">Twitter𝕏</option>
           <option value="LinkedIn">LinkedIn</option>
           <option value="YouTube">YouTube</option>
           <option value="other">Other</option>
@@ -54,7 +54,7 @@
       >
         <span class="icon">
           <img
-            :src="iconBaseUrl + '/' + returnIconFileName(link.type)"
+            :src="iconBaseUrl + '/fontawesome/' + returnIconFileName(link.type)"
             :alt="link.type"
           />
         </span>
@@ -158,14 +158,14 @@ export default {
     },
     returnIconFileName(linkType) {
       const iconMap = {
-        facebook: "facebook_logo.svg",
-        "𝕏": "twitx_logo.svg",
-        instagram: "instagram_logo.svg",
-        youtube: "youtube_logo.svg",
-        linkedin: "linkedin_logo.svg",
+        facebook: "facebook-f.svg",
+        twitterx: "twitterx.svg",
+        instagram: "instagram.svg",
+        youtube: "youtube.svg",
+        linkedin: "linkedin-in.svg",
       };
 
-      return iconMap[linkType.toLowerCase()] || "other-link_logo.svg"; // default_icon.svg is used when no match is found
+      return iconMap[linkType.toLowerCase()] || "link.svg"; // default_icon.svg is used when no match is found
     },
   },
 };
@@ -209,6 +209,8 @@ export default {
 .staffh_social-link-item span.icon img {
   max-width: 100%;
   vertical-align: middle;
+  object-fit: contain;
+  aspect-ratio: 1/1;
 }
 
 .staffh_btn-link span {

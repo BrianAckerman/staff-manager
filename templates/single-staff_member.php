@@ -3,25 +3,20 @@
  * Template Name: Custom Staff Member Template
  */
 get_header();
-if (has_post_thumbnail()) {
-    $phone_col = '300px';
-} else {
-    $phone_col = '';
-}
+$phone_col = has_post_thumbnail() ? '300px' : '';
 $post_id = get_the_ID();
 $quick_links = get_associated_quick_contacts($post_id);
-$quick_links_col = isset($quick_links) && is_array($quick_links) && !empty($quick_links) ? '300px' : '';
+$quick_links_col = !empty($quick_links) && is_array($quick_links) ? '300px' : '';
 
 function get_icon_file_name($link_type) {
     $icon_map = array(
-        'facebook' =>"facebook_logo.svg",
-        '𝕏'=> "twitx_logo.svg",
-        'instagram'=> "instagram_logo.svg",
-        'youtube'=> "youtube_logo.svg",
-        'linkedin'=> "linkedin_logo.svg",
+        'facebook' => "facebook-f.svg",
+        'twitterx'=> "twitterx.svg",
+        'instagram'=> "instagram.svg",
+        'youtube'=> "youtube.svg",
+        'linkedin'=> "linkedin-in.svg",
     );
-
-    return isset($icon_map[strtolower($link_type)]) ? $icon_map[strtolower($link_type)] : 'other-link_logo.svg'; // default_icon.svg is used when no match is found
+    return $icon_map[strtolower($link_type)] ?? 'link.svg';
 }
 
 ?>
@@ -40,20 +35,50 @@ function get_icon_file_name($link_type) {
     padding: 0;
 }
 
-.staffh_staff_social ul li img {
-    width: 100%;
-    max-width: 100%;
-    height: 30px;
+.staffh_staff_social a {
+    width: 40px;
+    display: block;
+    height: 40px;
+    padding: 10px;
+    border-radius: 100px;
+    background: #ddd;
+    margin: 5px;
+    line-height: 1;
 }
 
-.staffh_calls-to-action {
-    margin-bottom: 1em;
-    padding-bottom: 1em;
-    border-bottom: solid 1px;
+.staffh_staff_social ul li img {
+    aspect-ratio: 1/1;
+    filter: invert(1);
+}
+
+.staffh_staff_social a.facebook {
+    background-color: #3b5998;
+}
+
+.staffh_staff_social a.instagram {
+    background-color: #c32aa3;
+}
+
+.staffh_staff_social a.twitterx {
+    background-color: #000;
+}
+
+.staffh_staff_social a.youtube {
+    background-color: #ff0000;
+}
+
+.staffh_staff_social a.linkedin {
+    background-color: #007bb6;
+}
+
+.staffh_staff_social a.other img {
+    filter: invert(0);
 }
 
 .staffh_quick-links ul,
-.staffh_calls-to-action ul {
+.staffh_calls-to-action ul,
+.staffh_quick-links li,
+.staffh_quick-links p {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -63,29 +88,20 @@ function get_icon_file_name($link_type) {
     margin-bottom: 1em;
 }
 
-.staffh_calls-to-action a[role="button"] {
-    display: block;
-    padding: 1.25em 10px;
-    background: #ccc;
-    margin-bottom: 2px;
-    text-align: center;
-    line-height: 1.2;
-    text-decoration: none;
-}
-
-.staffh_quick-links h4 {
+.staffh_quick-links h4,
+.staffh_staff_information h1 {
     font-weight: bold;
     line-height: 1.2;
     margin: 0;
 }
 
+.staffh_staff_information h1 {
+    margin-bottom: 10px;
+}
+
 .staffh_quick-links h5 {
     font-weight: normal;
     line-height: 1.2;
-    margin: 0;
-}
-
-.staffh_quick-links p {
     margin: 0;
 }
 
@@ -97,159 +113,108 @@ function get_icon_file_name($link_type) {
     text-decoration: underline;
 }
 
-.staffh_staff_information h1 {
-    font-weight: bold;
-    line-height: 1.2;
+.staffh_staff_information address {
+    font-style: normal;
 }
 
 .staffh_staff_information h1 .staffh_sub_heading {
     font-size: 0.5em;
 }
+
+.staffh_staff_social {
+    padding: 10px 0;
+}
+
+.staffh_calls-to-action {
+    margin-bottom: 1em;
+    padding-bottom: 1em;
+    border-bottom: solid 1px;
+}
+
+.staffh_calls-to-action a[role="button"] {
+    display: block;
+    padding: 1.25em 10px;
+    background: #ccc;
+    margin-bottom: 2px;
+    text-align: center;
+    line-height: 1.2;
+    text-decoration: none;
+}
 </style>
 <div id="primary" class="content-area">
     <main id="main" class="site-main staffh_staff_member">
-        <?php
-        if (has_post_thumbnail()) {
-            echo '<div class="staffh_staff_photo">';
-            the_post_thumbnail();
-            echo '</div>';
-        }
-        ?>
+        <?php if (has_post_thumbnail()) : ?>
+        <div class="staffh_staff_photo"><?php the_post_thumbnail(); ?></div>
+        <?php endif; ?>
+
         <div class="staffh_staff_information">
             <?php
-            // Start the loop.
             while (have_posts()) {
                 the_post();
-                $post_content = get_the_content();
-                $parsed_data = json_decode($post_content, true);
+                $parsed_data = json_decode(get_the_content(), true);
 
-                // Check and set fullName
-                if (isset($parsed_data['fullName'])) {
-                    $fullName = $parsed_data['fullName'];
-                } else {
-                    $fullName = null;
-                }
+                $fullName       = $parsed_data['fullName'] ?? null;
+                $jobTitle       = $parsed_data['jobTitle'] ?? null;
+                $email          = $parsed_data['email'] ?? null;
+                $officePhone    = $parsed_data['officePhone'] ?? null;
+                $cellPhone      = $parsed_data['cellPhone'] ?? null;
+                $about          = $parsed_data['about'] ?? null;
+                $staffLinks     = $parsed_data['staffLinks'] ?? [];
+                $callsToAction  = $parsed_data['callsToAction'] ?? [];
 
-                // Check and set jobTitle
-                if (isset($parsed_data['jobTitle'])) {
-                    $jobTitle = $parsed_data['jobTitle'];
-                } else {
-                    $jobTitle = null;
-                }
-
-                // Check and set email
-                if (isset($parsed_data['email'])) {
-                    $email = $parsed_data['email'];
-                } else {
-                    $email = null;
-                }
-
-                // Check and set officePhone
-                if (isset($parsed_data['officePhone'])) {
-                    $officePhone = $parsed_data['officePhone'];
-                } else {
-                    $officePhone = null;
-                }
-
-                // Check and set cellPhone
-                if (isset($parsed_data['cellPhone'])) {
-                    $cellPhone = $parsed_data['cellPhone'];
-                } else {
-                    $cellPhone = null;
-                }
-
-                // Check and set about
-                if (isset($parsed_data['about'])) {
-                    $about = $parsed_data['about'];
-                    $about_sanitized = wp_kses_post($about); // Sanitize the 'about' field
-                } else {
-                    $about = null;
-                    $about_sanitized = null;
-                }
-
-                // Check and set staffLinks
-                if (isset($parsed_data['staffLinks'])) {
-                    $staffLinks = $parsed_data['staffLinks'];
-                } else {
-                    $staffLinks = array(); // or null if you prefer
-                }
-
-                // Check and set callsToAction
-                if (isset($parsed_data['callsToAction'])) {
-                    $callsToAction = $parsed_data['callsToAction'];
-                } else {
-                    $callsToAction = array(); // or null if you prefer
-                }
-
+                $about_sanitized = $about ? wp_kses_post($about) : null;
 
                 echo '<h1>';
-                if (isset($fullName)) {
-                    echo '<div class="staffh_staff_heading">' . $fullName . '</div>';
-                }
-                if (isset($jobTitle)) {
-                    echo '<div class="staffh_sub_heading">' . $jobTitle . '</div>';
-                }
+                echo $fullName ? "<div class=\"staffh_staff_heading\">{$fullName}</div>" : '';
+                echo $jobTitle ? "<div class=\"staffh_sub_heading\">{$jobTitle}</div>" : '';
                 echo '</h1>';
                 echo '<address>';
-                if (isset($officePhone)) {
-                    echo '<div class="staffh_staff_phone"><span class="staffh_staff_address_label">Office: </span><a href="tel:' . $officePhone . '">' . $officePhone . '</a></div>';
+                foreach (['Office' => $officePhone, 'Cell' => $cellPhone] as $label => $phone) {
+                    if ($phone) {
+                        echo "<div class=\"staffh_staff_phone\"><span class=\"staffh_staff_address_label\">{$label}: </span><a href=\"tel:{$phone}\">{$phone}</a></div>";
+                    }
                 }
-                if (isset($cellPhone)) {
-                    echo '<div class="staffh_staff_phone"><span class="staffh_staff_address_label">Cell: </span><a href="tel:' . $cellPhone . '">' . $cellPhone . '</a></div>';
-                }
-                if (isset($email)) {
-                    echo '<div class="staffh_staff_email"><span class="staffh_staff_address_label">Email: </span><a href="mailto:' . $email . '">' . $email . '</a></div>';
-                }
-                if (isset($staffLinks) && is_array($staffLinks)) {
+                echo $email ? "<div class=\"staffh_staff_email\"><span class=\"staffh_staff_address_label\">Email: </span><a href=\"mailto:{$email}\">{$email}</a></div>" : '';
+                
+                if ($staffLinks) {
                     echo '<div class="staffh_staff_social"><ul>';
                     foreach ($staffLinks as $link) {
                         $type = $link['type'];
                         $url = $link['url'];
                         $icon_file_name = get_icon_file_name($type);
-
-                        // Now, $icon_file_name contains the correct filename, based on the link type.
-                        // You can use it to generate the img tag for the icon.
-                        $img_url = plugins_url('../img/' . $icon_file_name, __FILE__);
-                        echo '<li><a href="' . esc_url($url) . '" target="_blank">';
-                        echo '<img src="' . esc_url($img_url) . '" alt="' . esc_attr($type) . '" height="25px" />';
-                        echo '</a></li>';
+                        $img_url = plugins_url('../img/fontawesome/' . $icon_file_name, __FILE__);
+                        echo "<li><a class=\"" . strtolower($type) . "\" href=\"" . esc_url($url) . "\" target=\"_blank\">";
+                        echo "<img src=\"" . esc_url($img_url) . "\" alt=\"" . esc_attr($type) . "\" height=\"25px\" />";
+                        echo "</a></li>";
                     }
                     echo '</ul></div>';
                 }
-                if(isset($about_sanitized)) {
+                
+                if ($about_sanitized) {
                     echo '</address>';
-                    echo '<div class="staffh_staff_body">';
-                    echo $about_sanitized;
-                    echo '</div>';
+                    echo "<div class=\"staffh_staff_body\">{$about_sanitized}</div>";
                 }
             }
-            // End the loop.
             ?>
         </div>
 
         <?php
-            if ((isset($callsToAction) && is_array($callsToAction)) || (isset($quick_links) && is_array($quick_links) && !empty($quick_links))) {
-                echo '<div>';
+        if ((!empty($callsToAction) && is_array($callsToAction)) || (!empty($quick_links) && is_array($quick_links) && !empty($quick_links))) {
+            echo '<div>';
 
-                if (isset($callsToAction) && is_array($callsToAction)) {
-                    echo '<div class="staffh_calls-to-action">';
-                    echo '<ul>';
-                    foreach ($callsToAction as $button) {
-                        $type = $button['type'];
-                        $url = $button['url'];
-                        $label = $button['label'];
-
-                        echo '<li>';
-                        echo '<a role="button" href="' . esc_url($url) . '" class="' . esc_attr($type) . '">';
-                        echo '<span>' . esc_attr($label) . '</span>';
-                        echo '</a>';
-                        echo '</li>';
-                    }
-                    echo '</ul>';
-                    echo '</div>';
+            if (!empty($callsToAction) && is_array($callsToAction)) {
+                echo '<div class="staffh_calls-to-action"><ul>';
+                foreach ($callsToAction as $button) {
+                    echo '<li>';
+                    echo '<a role="button" href="' . esc_url($button['url']) . '" class="' . esc_attr($button['type']) . '">';
+                    echo '<span>' . esc_attr($button['label']) . '</span>';
+                    echo '</a>';
+                    echo '</li>';
                 }
+                echo '</ul></div>';
+            }
 
-                if(isset($quick_links) && is_array($quick_links) && !empty($quick_links)) {
+                if(!empty($quick_links) && isset($quick_links) && is_array($quick_links) && !empty($quick_links)) {
                     echo '<div class="staffh_quick-links">';
                     echo '<h3>Quick Contacts</h3>';
                     echo '<ul>';
@@ -277,8 +242,7 @@ function get_icon_file_name($link_type) {
                 echo '</div>';
             }
         ?>
-</div>
-</main><!-- #main -->
+    </main><!-- #main -->
 </div><!-- #primary -->
 
 <?php get_footer(); ?>
