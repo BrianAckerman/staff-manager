@@ -41,11 +41,11 @@ function staff_members_plugin_menu() {
 
     add_submenu_page(
     'manage-staff',                             // Parent menu slug
-        'Archive Settings',                     // Page title
-        'Archive Settings',                     // Menu title
+        'Settings',                             // Page title
+        'Settings',                             // Menu title
         'manage_options',                       // Required capability
-        'staffh-archive-settings',              // Submenu slug
-        'staffh_archive_settings'                       // Callback function
+        'staffh-settings',                      // Submenu slug
+        'staffh_settings'                       // Callback function
     );
 
     

@@ -7,6 +7,12 @@ $phone_col = has_post_thumbnail() ? '300px' : '';
 $post_id = get_the_ID();
 $quick_links = get_associated_quick_contacts($post_id);
 $quick_links_col = !empty($quick_links) && is_array($quick_links) ? '300px' : '';
+$primary_bg = get_option('staffh_cta_primary_bg');
+$primary_text = get_option('staffh_cta_primary_text');
+$secondary_bg = get_option('staffh_cta_secondary_bg');
+$secondary_text = get_option('staffh_cta_secondary_text');
+$tertiary_bg = get_option('staffh_cta_tertiary_bg');
+$tertiary_text = get_option('staffh_cta_tertiary_text');
 
 function get_icon_file_name($link_type) {
     $icon_map = array(
@@ -139,6 +145,21 @@ function get_icon_file_name($link_type) {
     text-align: center;
     line-height: 1.2;
     text-decoration: none;
+}
+
+.staffh_calls-to-action a.primary {
+    background-color: <?php echo $primary_bg ?>;
+    color: <?php echo $primary_text ?>;
+}
+
+.staffh_calls-to-action a.secondary {
+    background-color: <?php echo $secondary_bg ?>;
+    color: <?php echo $secondary_text ?>;
+}
+
+.staffh_calls-to-action a.tertiary {
+    background-color: <?php echo $tertiary_bg ?>;
+    color: <?php echo $tertiary_text?>;
 }
 </style>
 <div id="primary" class="content-area">

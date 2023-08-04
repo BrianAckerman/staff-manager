@@ -2,7 +2,7 @@
   <div v-if="!view || !hasCallsToAction" class="staffh_calls_to_action-links">
     <form @submit.prevent="save">
       <div class="staffh_form-group">
-        <label for="link-type">Button type:</label>
+        <label for="link-type">Style:</label>
         <select
           name="link-type"
           v-model="activeButton.type"
@@ -59,9 +59,11 @@
         :class="
           typeof button.type !== 'undefined' ? button.type.toLowerCase() : ''
         "
-        :title="button.link"
+        :title="button.url"
       >
-        <span>{{ button.label }}</span>
+        <span>{{ button.label }}</span
+        ><br />
+        <span>{{ button.url }}</span>
         <button
           role="button"
           title="Edit"
