@@ -75,10 +75,6 @@
             </button>
             <button type="submit" class="button">Save</button>
           </div>
-          <div class="debug" style="display: flex">
-            <pre>{{ this.temporaryContact }}</pre>
-            <pre>{{ this.contact }}</pre>
-          </div>
         </form>
       </div>
     </div>
