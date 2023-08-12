@@ -27,7 +27,6 @@ require_once STAFFH_PLUGIN_DIR . 'includes/post_type-staff-member.php';
 require_once STAFFH_PLUGIN_DIR . 'includes/admin_single.php';
 require_once STAFFH_PLUGIN_DIR . 'includes/admin_quickcontacts.php';
 require_once STAFFH_PLUGIN_DIR . 'includes/admin_settings.php';
-require_once STAFFH_PLUGIN_DIR . 'includes/admin_settings-test.php';
 require_once STAFFH_PLUGIN_DIR . 'includes/rest.php';
 require_once STAFFH_PLUGIN_DIR . 'includes/enqueue-scripts.php';
 
