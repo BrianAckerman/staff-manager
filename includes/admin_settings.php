@@ -8,7 +8,6 @@ function enqueue_color_picker() {
 add_action('admin_enqueue_scripts', 'enqueue_color_picker');
 
 // This section groups all functions related to settings and their callbacks
-
 function radio_button($name, $value, $checked_value, $display_label = null) {
     // Use the value as the label if no display label is provided
     if ($display_label === null) {
@@ -16,7 +15,6 @@ function radio_button($name, $value, $checked_value, $display_label = null) {
     }
 
     $checked = checked($value, $checked_value, false);
-
     echo "<label><input type='radio' name='{$name}' value='{$value}' {$checked} disabled> {$display_label}</label><br>";
 }
 
@@ -46,76 +44,54 @@ function staffh_settings_conflict_notice() {
     echo '</p></div>';
 }
 
+function staffh_update_option_if_set($post_key, $option_name) {
+    if (isset($_POST[$post_key]) && !empty($_POST[$post_key])) {
+        update_option($option_name, $_POST[$post_key]);
+    }
+}
+
+function staffh_boolean_option_update($post_key, $option_name) {
+    $value = isset($_POST[$post_key]) && $_POST[$post_key] === '0' ? 0 : 1;
+    update_option($option_name, $value);
+}
+
 function staffh_settings_save() {
     // Check the nonce for security
     if (!isset($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'staffh_settings_nonce')) {
         wp_die('Invalid request.');
     }
 
-    // The value from the form (yes/no) to include the archive page path in the permalink, e.g. ~/archive/staff-member or ~/staff-member and save the value to the option 'staffh_include_archive_in_permalink'
-    $staffh_include_archive_in_permalink = isset($_POST['staffh_include_archive_in_permalink']) && $_POST['staffh_include_archive_in_permalink'] === '0' ? 0 : 1;
-    update_option('staffh_include_archive_in_permalink', $staffh_include_archive_in_permalink);
+    // Handle booleans
+    staffh_boolean_option_update('staffh_include_archive_in_permalink', 'staffh_include_archive_in_permalink');
+    staffh_boolean_option_update('staffh_disable_archive_page', 'staffh_disable_archive_page');
 
-    // Enable or disable the archive page based on the 'staffh_disable_archive_page' option & save the value to the option 'staffh_disable_archive_page'
-    $disable_archive = isset($_POST['staffh_disable_archive_page']) && $_POST['staffh_disable_archive_page'] === '0' ? 0 : 1;
-    update_option('staffh_disable_archive_page', $disable_archive);
-
-    // Primary CTA BG Color
-    if(isset($_POST['staffh_cta_primary_bg']) && !empty($_POST['staffh_cta_primary_bg'])) {
-        update_option('staffh_cta_primary_bg', $_POST['staffh_cta_primary_bg']);
-    }
-
-    // Primary CTA Text Color
-    if(isset($_POST['staffh_cta_primary_text']) && !empty($_POST['staffh_cta_primary_text'])) {
-        update_option('staffh_cta_primary_text', $_POST['staffh_cta_primary_text']);
-    }
-
-    // Secondary CTA BG Color
-    if(isset($_POST['staffh_cta_secondary_bg']) && !empty($_POST['staffh_cta_secondary_bg'])) {
-        update_option('staffh_cta_secondary_bg', $_POST['staffh_cta_secondary_bg']);
-    }
-
-    // Secondary CTA Text Color
-    if(isset($_POST['staffh_cta_secondary_text']) && !empty($_POST['staffh_cta_secondary_text'])) {
-        update_option('staffh_cta_secondary_text', $_POST['staffh_cta_secondary_text']);
-    }
-
-    // Tertiary CTA BG Color
-    if(isset($_POST['staffh_cta_tertiary_bg']) && !empty($_POST['staffh_cta_tertiary_bg'])) {
-        update_option('staffh_cta_tertiary_bg', $_POST['staffh_cta_tertiary_bg']);
-    }
-
-    // Tertiary CTA Text Color
-    if(isset($_POST['staffh_cta_tertiary_text']) && !empty($_POST['staffh_cta_tertiary_text'])) {
-        update_option('staffh_cta_tertiary_text', $_POST['staffh_cta_tertiary_text']);
-    }
+    // Handle colors
+    staffh_update_option_if_set('staffh_cta_primary_bg', 'staffh_cta_primary_bg');
+    staffh_update_option_if_set('staffh_cta_primary_text', 'staffh_cta_primary_text');
+    staffh_update_option_if_set('staffh_cta_secondary_bg', 'staffh_cta_secondary_bg');
+    staffh_update_option_if_set('staffh_cta_secondary_text', 'staffh_cta_secondary_text');
+    staffh_update_option_if_set('staffh_cta_tertiary_bg', 'staffh_cta_tertiary_bg');
+    staffh_update_option_if_set('staffh_cta_tertiary_text', 'staffh_cta_tertiary_text');
 
     // Archive slug
     if (isset($_POST['staffh_archive_slug'])) {
         $new_slug = sanitize_text_field($_POST['staffh_archive_slug']);
-        
-        // Check if there are no pages or posts with the new slug
         $page_exists = get_page_by_path($new_slug) ? true : false;
         $post_exists = get_page_by_path($new_slug, OBJECT, 'post') ? true : false;
 
-        // If there are no conflicts
         if (!($page_exists || $post_exists)) {        
-            // Save the value to the option 'staffh_archive_slug'
             update_option('staffh_archive_slug', $new_slug);
         } else {
-            // Redirect back to the settings page with a failure query parameter
             wp_safe_redirect(admin_url('admin.php?page=staffh-settings&page-already-exists=true&slug=' . $new_slug));
             exit;
         }
     }
 
-    // Flush the rewrite rules after saving the settings
     flush_rewrite_rules();
-
-    // Redirect back to the settings page with a success query parameter
     wp_safe_redirect(admin_url('admin.php?page=staffh-settings&settings-updated=true'));
     exit;
 }
+
 
 add_action('register_post_type_args', 'staffh_update_post_type_args', 10, 2);
 
@@ -173,10 +149,6 @@ function staffh_cta_tertiary_text_callback() {
 }
 
 // This section groups all functions related to admin initialization and settings display
-function staffh_admin_init() {
-    flush_rewrite_rules();
-}
-
 function staffh_settings() {
     // Check if the form is submitted and handle the save action
     if (isset($_POST['submit'])) {
@@ -231,168 +203,43 @@ jQuery(document).ready(function($) {
 <?php
 }
 
-// This section contains all register_setting and add_settings_field calls
-
 function staffh_settings_init() {
 
-    // Add the "Archive" section
-    add_settings_section(
-        'staffh_archive_settings_section',                  // Section ID
-        '',                                                 // Section title
-        '',                                                 // Callback function to render the section content
-        'staffh_settings'                                   // Settings page slug
-    );
+    // Flush rewrite becuase we're dealing with permalinks
+    flush_rewrite_rules();
 
-    // Add the "Archive Slug" field
-    add_settings_field(
-        'staffh_archive_slug',                              // Field ID
-        'Archive Slug',                                     // Field title
-        'staffh_archive_slug_callback',                     // Callback function to render the field
-        'staffh_settings',                                  // Settings page slug
-        'staffh_archive_settings_section'                   // Section ID where the field should be added
-    );
+    $sections = [
+        'archive' => 'staffh_archive_settings_section',
+        'ctas' => 'staffh_ctas_settings_section',
+        'settings' => 'staffh_settings_section',
+    ];
 
-    // Register the "staffh_archive_slug" setting
-    register_setting(
-        'staffh_settings_group',                            // Group ID (not related to sections)
-        'staffh_archive_slug'                               // Setting name (option name in the database)
-    );
+    $fields = [
+        // 'Field ID' => [ 'title', 'callback', 'section', 'setting name', 'setting type', 'default value']
+        'staffh_archive_slug' => ['Archive Slug', 'staffh_archive_slug_callback', 'archive', 'staffh_archive_slug', null, null],
+        'staffh_disable_archive' => ['Disable the archive?', 'staffh_disable_callback', 'archive', 'staffh_disable_archive_page', 'boolean', 0],
+        'staffh_cta_primary_bg' => ['Primary CTA Background Color', 'staffh_cta_primary_bg_callback', 'ctas', 'staffh_cta_primary_bg', null, null],
+        'staffh_cta_primary_text' => ['Primary CTA Text Color', 'staffh_cta_primary_text_callback', 'ctas', 'staffh_cta_primary_text', null, null],
+        'staffh_cta_secondary_bg' => ['Secondary CTA Background Color', 'staffh_cta_secondary_bg_callback', 'ctas', 'staffh_cta_secondary_bg', null, null],
+        'staffh_cta_secondary_text' => ['Secondary CTA Text Color', 'staffh_cta_secondary_text_callback', 'ctas', 'staffh_cta_secondary_text', null, null],
+        'staffh_cta_tertiary_bg' => ['Tertiary CTA Background Color', 'staffh_cta_tertiary_bg_callback', 'ctas', 'staffh_cta_tertiary_bg', null, null],
+        'staffh_cta_tertiary_text' => ['Tertiary CTA Text Color', 'staffh_cta_tertiary_text_callback', 'ctas', 'staffh_cta_tertiary_text', null, null],
+        'staffh_settings_nonce' => ['', 'staffh_settings_nonce_callback', 'settings', null, null, null]
+    ];
 
-    // Add the "Disable the archive?" field
-    add_settings_field(
-        'staffh_disable_archive',                           // Field ID
-        'Disable the archive?',                             // Field title
-        'staffh_disable_callback',                          // Callback function to render the field
-        'staffh_settings',                                  // Settings page slug
-        'staffh_archive_settings_section'                   // Section ID where the field should be added
-    );
+    foreach ($sections as $section) {
+        add_settings_section($section, '', '', 'staffh_settings');
+    }
 
-    // Register the "staffh_disable_archive_page" setting
-    register_setting(
-        'staffh_settings_group',                            // Group ID (not related to sections)
-        'staffh_disable_archive_page',                      // Setting name (option name in the database)
-        array(
-            'default' => 0,                                 // Default value for the setting
-            'type' => 'boolean',                            // Type of the setting (boolean in this case)
-        )
-    );
+    foreach ($fields as $field_id => $details) {
+        add_settings_field($field_id, $details[0], $details[1], 'staffh_settings', $sections[$details[2]]);
 
-    // Add the "CTAs" section
-    add_settings_section(
-        'staffh_ctas_settings_section',                     // Section ID
-        '',                                                 // Section title
-        '',                                                 // Callback function to render the section content
-        'staffh_settings'                                   // Settings page slug
-    );
-
-    // Add the "Primary CTA Background" field
-    add_settings_field(
-        'staffh_cta_primary_bg',                            // Field ID
-        'Primary CTA Background Color',                     // Field title
-        'staffh_cta_primary_bg_callback',                   // Callback function to render the field
-        'staffh_settings',                                  // Settings page slug
-        'staffh_ctas_settings_section'                      // Section ID where the field should be added
-    );
-
-    // Register the "staffh_cta_primary_bg" setting
-    register_setting(
-        'staffh_settings_group',                            // Group ID (not related to sections)
-        'staffh_cta_primary_bg'                             // Setting name (option name in the database)
-    );
-
-    // Add the "Primary CTA Text" field
-    add_settings_field(
-        'staffh_cta_primary_text',                          // Field ID
-        'Primary CTA Text Color',                           // Field title
-        'staffh_cta_primary_text_callback',                 // Callback function to render the field
-        'staffh_settings',                                  // Settings page slug
-        'staffh_ctas_settings_section'                      // Section ID where the field should be added
-    );
-
-    // Register the "staffh_cta_primary_text" setting
-    register_setting(
-        'staffh_settings_group',                            // Group ID (not related to sections)
-        'staffh_cta_primary_text'                           // Setting name (option name in the database)
-    );
-
-    // Add the "Secondary CTA BG" field
-    add_settings_field(
-        'staffh_cta_secondary_bg',                          // Field ID
-        'Secondary CTA Background Color',                   // Field title
-        'staffh_cta_secondary_bg_callback',                 // Callback function to render the field
-        'staffh_settings',                                  // Settings page slug
-        'staffh_ctas_settings_section'                      // Section ID where the field should be added
-    );
-
-    // Register the "staffh_cta_secondary_bg" setting
-    register_setting(
-        'staffh_settings_group',                            // Group ID (not related to sections)
-        'staffh_cta_secondary_bg'                           // Setting name (option name in the database)
-    );
-
-    // Add the "Secondary CTA Text" field
-    add_settings_field(
-        'staffh_cta_secondary_text',                        // Field ID
-        'Secondary CTA Text Color',                         // Field title
-        'staffh_cta_secondary_text_callback',               // Callback function to render the field
-        'staffh_settings',                                  // Settings page slug
-        'staffh_ctas_settings_section'                      // Section ID where the field should be added
-    );
-
-    // Register the "staffh_cta_secondary_text" setting
-    register_setting(
-        'staffh_settings_group',                            // Group ID (not related to sections)
-        'staffh_cta_secondary_text'                         // Setting name (option name in the database)
-    );
-
-    // Add the "Tertiary CTA Background" field
-    add_settings_field(
-        'staffh_cta_tertiary_bg',                           // Field ID
-        'Tertiary CTA Background Color',                    // Field title
-        'staffh_cta_tertiary_bg_callback',                  // Callback function to render the field
-        'staffh_settings',                                  // Settings page slug
-        'staffh_ctas_settings_section'                      // Section ID where the field should be added
-    );
-
-    // Register the "staffh_cta_tertiary_bg" setting
-    register_setting(
-        'staffh_settings_group',                            // Group ID (not related to sections)
-        'staffh_cta_tertiary_bg'                            // Setting name (option name in the database)
-    );
-
-    // Add the "Tertiary CTA Text" field
-    add_settings_field(
-        'staffh_cta_tertiary_text',                         // Field ID
-        'Tertiary CTA Text Color',                          // Field title
-        'staffh_cta_tertiary_text_callback',                // Callback function to render the field
-        'staffh_settings',                                  // Settings page slug
-        'staffh_ctas_settings_section'                      // Section ID where the field should be added
-    );
-
-    // Register the "staffh_cta_tertiary_text" setting
-    register_setting(
-        'staffh_settings_group',                            // Group ID (not related to sections)
-        'staffh_cta_tertiary_text'                          // Setting name (option name in the database)
-    );
-
-    // Add the "Settings" section
-    add_settings_section(
-        'staffh_settings_section',                     // Section ID
-        '',                                                 // Section title
-        '',                                                 // Callback function to render the section content
-        'staffh_settings'                                   // Settings page slug
-    );
-
-    // Add a nonce field to the form for security (optional but recommended)
-    add_settings_field(
-        'staffh_settings_nonce',                           // Field ID
-        '',                                                // Field title (leave it empty)
-        'staffh_settings_nonce_callback',                  // Callback function to render the field
-        'staffh_settings',                                 // Settings page slug
-        'staffh_settings_section'                          // Section ID where the field should be added
-    );
+        if (isset($details[3])) {
+            $args = ['type' => $details[4] ?? 'string', 'default' => $details[5] ?? null];
+            register_setting('staffh_settings_group', $details[3], $args);
+        }
+    }
 }
 
-add_action('admin_init', 'staffh_admin_init');
 add_action('admin_init', 'staffh_settings_init');
 add_action('admin_post_staffh_settings_save', 'staffh_settings_save');

@@ -1,6 +1,17 @@
 .staffh_staff_member {
     display: grid;
     gap: 2.5%;
+    padding:1rem;
+}
+
+.staffh_staff_member * {
+    box-sizing: border-box;
+}
+
+.staffh_staff_member img {
+    max-width: 100%;
+    height: auto;
+    display: block;
 }
 
 .staffh_staff_social ul {
@@ -61,7 +72,7 @@
 }
 
 .staffh_quick-links li {
-    margin-bottom: 1em;
+    margin-bottom: 1rem;
 }
 
 .staffh_quick-links h4,
@@ -94,7 +105,7 @@
 }
 
 .staffh_staff_information h1 .staffh_sub_heading {
-    font-size: 0.5em;
+    font-size: 0.5rem;
 }
 
 .staffh_staff_social {
@@ -102,8 +113,8 @@
 }
 
 .staffh_calls-to-action {
-    margin-bottom: 1em;
-    padding-bottom: 1em;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
     border-bottom: solid 1px;
 }
 
@@ -111,7 +122,7 @@
     display: block;
     padding: 1.25em 10px;
     background: #ccc;
-    margin-bottom: 2px;
+    margin-bottom: 0.5rem;
     text-align: center;
     line-height: 1.2;
     text-decoration: none;
