@@ -4,7 +4,7 @@
 function create_quick_contact_tables() {
     global $wpdb;
     $table_name_quick_contacts = $wpdb->prefix . 'staffh_quickcontacts';
-    $table_name_staff_associations = $wpdb->prefix . 'staffh_quickcontact_staffassociations';
+    $table_name_staff_associations = $wpdb->prefix . 'staffh_quickcontact_associations';
 
     $charset_collate = $wpdb->get_charset_collate();
 
@@ -26,28 +26,6 @@ function create_quick_contact_tables() {
 
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql);
-
-        // Insert starter data for quick contacts
-        $starter_contacts = array(
-            array(
-                'status' => 1,
-                'name' => 'John Doe',
-                'title' => 'Manager',
-                'email' => 'john@example.com',
-                'phone' => '123-456-7890'
-            ),
-            array(
-                'status' => 1,
-                'name' => 'Jane Smith',
-                'title' => 'Assistant',
-                'email' => 'jane@example.com',
-                'phone' => '987-654-3210'
-            )
-        );
-
-        foreach ($starter_contacts as $data) {
-            $wpdb->insert($table_name_quick_contacts, $data);
-        }
     }
 
     if (!$associations_table_exists) {
@@ -71,28 +49,6 @@ function create_quick_contact_tables() {
             'staff_member'
         )
     );
-
-    // Shuffle the staff member IDs
-    shuffle($staff_member_ids);
-
-    // Insert starter associations
-    $quick_contact_ids = $wpdb->get_col("SELECT id FROM $table_name_quick_contacts");
-    $starter_associations_data = array();
-    $staff_member_index = 0;
-
-    foreach ($quick_contact_ids as $quick_contact_id) {
-        $starter_associations_data[] = array(
-            'quick_contact_id' => $quick_contact_id,
-            'staff_member_id' => $staff_member_ids[$staff_member_index],
-        );
-
-        // Move to the next staff member ID
-        $staff_member_index = ($staff_member_index + 1) % count($staff_member_ids);
-    }
-
-    foreach ($starter_associations_data as $data) {
-        $wpdb->insert($table_name_staff_associations, $data);
-    }
 }
 
 // Plugin activation check
