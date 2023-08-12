@@ -43,7 +43,6 @@ function staffh_register_staff_member_post_type()
 
 add_action('init', 'staffh_register_staff_member_post_type');
 
-
 function disable_block_editor_for_staff_member($use_block_editor, $post_type) {
     if ($post_type === 'staff_member') {
         return false;

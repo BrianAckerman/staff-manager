@@ -1,0 +1,118 @@
+.staffh_staff_member {
+    display: grid;
+    gap: 2.5%;
+}
+
+.staffh_staff_social ul {
+    display: flex;
+    justify-content: flex-start;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.staffh_staff_social a {
+    width: 40px;
+    display: block;
+    height: 40px;
+    padding: 10px;
+    border-radius: 100px;
+    background: #ddd;
+    margin: 5px;
+    line-height: 1;
+}
+
+.staffh_staff_social ul li img {
+    aspect-ratio: 1/1;
+    filter: invert(1);
+}
+
+.staffh_staff_social a.facebook {
+    background-color: #3b5998;
+}
+
+.staffh_staff_social a.instagram {
+    background-color: #c32aa3;
+}
+
+.staffh_staff_social a.twitterx {
+    background-color: #000;
+}
+
+.staffh_staff_social a.youtube {
+    background-color: #ff0000;
+}
+
+.staffh_staff_social a.linkedin {
+    background-color: #007bb6;
+}
+
+.staffh_staff_social a.other img {
+    filter: invert(0);
+}
+
+.staffh_quick-links ul,
+.staffh_calls-to-action ul,
+.staffh_quick-links li,
+.staffh_quick-links p {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.staffh_quick-links li {
+    margin-bottom: 1em;
+}
+
+.staffh_quick-links h4,
+.staffh_staff_information h1 {
+    font-weight: bold;
+    line-height: 1.2;
+    margin: 0;
+}
+
+.staffh_staff_information h1 {
+    margin-bottom: 10px;
+}
+
+.staffh_quick-links h5 {
+    font-weight: normal;
+    line-height: 1.2;
+    margin: 0;
+}
+
+.staffh_quick-links a[href*=tel] {
+    color: currentcolor;
+}
+
+.staffh_quick-links a[href*=mailto] {
+    text-decoration: underline;
+}
+
+.staffh_staff_information address {
+    font-style: normal;
+}
+
+.staffh_staff_information h1 .staffh_sub_heading {
+    font-size: 0.5em;
+}
+
+.staffh_staff_social {
+    padding: 10px 0;
+}
+
+.staffh_calls-to-action {
+    margin-bottom: 1em;
+    padding-bottom: 1em;
+    border-bottom: solid 1px;
+}
+
+.staffh_calls-to-action a[role="button"] {
+    display: block;
+    padding: 1.25em 10px;
+    background: #ccc;
+    margin-bottom: 2px;
+    text-align: center;
+    line-height: 1.2;
+    text-decoration: none;
+}

@@ -1,4 +1,15 @@
 <?php
+function add_staffh_quickcontacts_menu() {
+    add_submenu_page(
+        'edit.php?post_type=staff_member',      // Parent menu slug
+        'Quick Contacts',                       // Page title
+        'Quick Contacts',                       // Menu title
+        'manage_options',                       // Required capability
+        'staffh_quick_contacts',                // Submenu slug
+        'staffh_quick_contacts'                 // Callback function
+    );
+}
+add_action( 'admin_menu', 'add_staffh_quickcontacts_menu' );
 
 function staffh_quick_contacts() {
     // Enqueue scripts and styles

@@ -1,56 +1,15 @@
 <?php
-function staff_members_plugin_menu() {
-    // Remove original Staff Members menu item
-    remove_menu_page( 'edit.php?post_type=staff_member' );
-
-    // Add custom Staff Members menu item with submenus
-    add_menu_page(
-        'Staff Hero Staff Manager',             // Page title
-        'Staff',                                // Menu title
-        'manage_options',                       // Required capability
-        'manage-staff',                         // Menu slug
-        'staff_members_plugin_page',            // Callback function
-        'dashicons-id',                         // Menu icon
-        20                                      // Menu position
-    );
-
+function staff_members_settings_menu() {
     add_submenu_page(
-        'manage-staff',                         // Parent menu slug
-        'All Staff',                            // Page title
-        'All Staff',                            // Menu title
-        'manage_options',                       // Required capability
-        'edit.php?post_type=staff_member'       // Submenu slug
-    );
-
-    add_submenu_page(
-        'manage-staff',                         // Parent menu slug
-        'Add New Staff',                        // Page title
-        'Add New',                              // Menu title
-        'manage_options',                       // Required capability
-        'post-new.php?post_type=staff_member'   // Submenu slug
-    );
-
-    add_submenu_page(
-        'manage-staff',                         // Parent menu slug
-        'Quick Contacts',                       // Page title
-        'Quick Contacts',                       // Menu title
-        'manage_options',                       // Required capability
-        'staffh_quick_contacts',                // Submenu slug
-        'staffh_quick_contacts'                 // Callback function
-    );
-
-    add_submenu_page(
-    'manage-staff',                             // Parent menu slug
+        'edit.php?post_type=staff_member',      // Parent menu slug
         'Settings',                             // Page title
         'Settings',                             // Menu title
         'manage_options',                       // Required capability
         'staffh-settings',                      // Submenu slug
         'staffh_settings'                       // Callback function
     );
-
-    
 }
-add_action( 'admin_menu', 'staff_members_plugin_menu' );
+add_action( 'admin_menu', 'staff_members_settings_menu' );
 
 function staff_manager_enqueue_scripts($hook_suffix) {
     // Check if the current page is the list page
@@ -101,7 +60,7 @@ function display_custom_columns($column, $post_id) {
                 echo __('No Image');
             }
             break;
-        // Add more column cases here
+        // Add more column cases here if needed
     }
 }
 add_action('manage_staff_member_posts_custom_column', 'display_custom_columns', 10, 2);
@@ -121,14 +80,4 @@ function make_last_modified_column_sortable($columns) {
 }
 add_filter('manage_edit-staff_member_sortable_columns', 'make_last_modified_column_sortable');
 
-function staff_members_plugin_page() {  
-?>
-
-<div id="staff-members">
-    <h1>Staff Members</h1>
-    <div id="app"></div>
-</div>
-
-<?php
-}
 ?>

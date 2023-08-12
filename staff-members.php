@@ -23,13 +23,13 @@ require_once STAFFH_PLUGIN_DIR . 'includes/database.php';
 require_once STAFFH_PLUGIN_DIR . 'includes/staff-members-admin.php';
 
 // Include the files that define custom post types, meta boxes, and shortcodes
-require_once STAFFH_PLUGIN_DIR . 'includes/custom-post-type.php';
+require_once STAFFH_PLUGIN_DIR . 'includes/post_type-staff-member.php';
 require_once STAFFH_PLUGIN_DIR . 'includes/admin_single.php';
 require_once STAFFH_PLUGIN_DIR . 'includes/admin_quickcontacts.php';
 require_once STAFFH_PLUGIN_DIR . 'includes/admin_settings.php';
 require_once STAFFH_PLUGIN_DIR . 'includes/admin_settings-test.php';
-require_once STAFFH_PLUGIN_DIR . 'includes/shortcode.php';
 require_once STAFFH_PLUGIN_DIR . 'includes/rest.php';
+require_once STAFFH_PLUGIN_DIR . 'includes/enqueue-scripts.php';
 
 // Define single template
 function staffh_custom_single_template($template) {
@@ -43,19 +43,16 @@ function staffh_custom_single_template($template) {
 }
 
 add_filter('template_include', 'staffh_custom_single_template');
-add_action( 'admin_menu', 'staff_members_plugin_menu' );
 
-
-// Example POST data - for debugging
-/*
-function preview_post_data($post_id) {
-    //if (isset($_POST['wp-preview']) && $_POST['wp-preview'] === 'dopreview') {
-        echo '<pre>';
-        print_r($_POST);
-        echo '</pre>';
-        wp_die(); // Stop further execution and display the POST data
-    //}
+// Helper Function(s)
+function get_icon_file_name($link_type) {
+    $icon_map = array(
+        'facebook' => "facebook-f.svg",
+        'twitterx'=> "twitterx.svg",
+        'instagram'=> "instagram.svg",
+        'youtube'=> "youtube.svg",
+        'linkedin'=> "linkedin-in.svg",
+    );
+    return $icon_map[strtolower($link_type)] ?? 'link.svg';
 }
-add_action('save_post', 'preview_post_data');
-*/
 ?>

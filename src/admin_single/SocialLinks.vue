@@ -29,9 +29,7 @@
         />
       </div>
       <div>
-        <button type="submit" class="staffh_btn staffh_btn-primary">
-          Save
-        </button>
+        <button type="submit" class="staffh_btn staffh_btn-primary">Add</button>
         <button
           @click="cancel"
           type="reset"
