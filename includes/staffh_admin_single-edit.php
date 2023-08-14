@@ -1,5 +1,5 @@
 <?php
-add_action('add_meta_boxes_staff_member', 'create_staff_meta_box');
+add_action('add_meta_boxes_staff_member', 'create_staff_meta_box', 2);
 
 function create_staff_meta_box() {
     add_meta_box(

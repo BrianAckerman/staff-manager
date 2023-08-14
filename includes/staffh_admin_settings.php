@@ -1,5 +1,17 @@
 <?php
 
+function staff_members_settings_menu() {
+    add_submenu_page(
+        'edit.php?post_type=staff_member',      // Parent menu slug
+        'Settings',                             // Page title
+        'Settings',                             // Menu title
+        'manage_options',                       // Required capability
+        'staffh-settings',                      // Submenu slug
+        'staffh_settings'                       // Callback function
+    );
+}
+add_action( 'admin_menu', 'staff_members_settings_menu' );
+
 // Enqueue color picker script
 function enqueue_color_picker() {
     wp_enqueue_style('wp-color-picker');

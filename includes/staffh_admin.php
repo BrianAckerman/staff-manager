@@ -1,15 +1,4 @@
 <?php
-function staff_members_settings_menu() {
-    add_submenu_page(
-        'edit.php?post_type=staff_member',      // Parent menu slug
-        'Settings',                             // Page title
-        'Settings',                             // Menu title
-        'manage_options',                       // Required capability
-        'staffh-settings',                      // Submenu slug
-        'staffh_settings'                       // Callback function
-    );
-}
-add_action( 'admin_menu', 'staff_members_settings_menu' );
 
 function staff_manager_enqueue_scripts($hook_suffix) {
     // Check if the current page is the list page
@@ -17,11 +6,6 @@ function staff_manager_enqueue_scripts($hook_suffix) {
         wp_enqueue_style('staff-admin-list-stylesheet', STAFFH_PLUGIN_URL . 'css/admin-list.css', array(), '1.0');
         return;
     }
-    
-    // Enqueue scripts and styles
-    wp_enqueue_script( 'vue', 'https://unpkg.com/vue@3/dist/vue.global.js', array(), '1.0');
-    wp_enqueue_script('staffh_script', STAFFH_PLUGIN_URL . 'dist/staff-list-bundle.js', array('vue'), '1.0', true);
-    wp_enqueue_style('staffh_style', STAFFH_PLUGIN_URL . 'dist/staff-list-bundle.css', array(), '1.0');
     
     // Localize user capability
     wp_localize_script('staffh_script', 'wpData', array(

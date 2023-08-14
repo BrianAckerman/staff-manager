@@ -2,7 +2,6 @@
 // Register the "staff_member" custom post type
 function staffh_register_staff_member_post_type()
 {
-
     // Get the slug from the settings page or use the default 'staff-members'
     $slug = get_option('staffh_archive_slug', 'staff-members');
 

@@ -17,18 +17,18 @@ define('STAFFH_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('STAFFH_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 // Include the database file
-require_once STAFFH_PLUGIN_DIR . 'includes/database.php';
+require_once STAFFH_PLUGIN_DIR . 'includes/staffh_database.php';
 
  // Include the custom admin page file
-require_once STAFFH_PLUGIN_DIR . 'includes/staff-members-admin.php';
+require_once STAFFH_PLUGIN_DIR . 'includes/staffh_admin.php';
 
 // Include the files that define custom post types, meta boxes, and shortcodes
-require_once STAFFH_PLUGIN_DIR . 'includes/post_type-staff-member.php';
-require_once STAFFH_PLUGIN_DIR . 'includes/admin_single.php';
-require_once STAFFH_PLUGIN_DIR . 'includes/admin_quickcontacts.php';
-require_once STAFFH_PLUGIN_DIR . 'includes/admin_settings.php';
-require_once STAFFH_PLUGIN_DIR . 'includes/rest.php';
-require_once STAFFH_PLUGIN_DIR . 'includes/enqueue-scripts.php';
+require_once STAFFH_PLUGIN_DIR . 'includes/staffh_post-type.php';
+require_once STAFFH_PLUGIN_DIR . 'includes/staffh_admin_single-edit.php';
+require_once STAFFH_PLUGIN_DIR . 'includes/staffh_admin_quickcontacts.php';
+require_once STAFFH_PLUGIN_DIR . 'includes/staffh_admin_settings.php';
+require_once STAFFH_PLUGIN_DIR . 'includes/staffh_rest.php';
+require_once STAFFH_PLUGIN_DIR . 'includes/staffh_enqueue-scripts.php';
 
 // Define single template
 function staffh_custom_single_template($template) {
