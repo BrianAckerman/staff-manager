@@ -29,7 +29,7 @@ function staffh_archive_slug_callback() {
 }
 
 function staffh_disable_callback() {
-    $disable_archive = get_option('staffh_disable_archive_page', 0);
+    $disable_archive = get_option('staffh_disable_archive_page');
     radio_button('staffh_disable_archive_page', '1', $disable_archive, "Yes");
     radio_button('staffh_disable_archive_page', '0', $disable_archive, "No");
 }
@@ -113,37 +113,37 @@ function staffh_update_post_type_args($args, $post_type) {
 }
 
 function staffh_cta_primary_bg_callback() {
-    $primary_bg = get_option('staffh_cta_primary_bg', "#000000");
+    $primary_bg = get_option('staffh_cta_primary_bg');
 
     echo '<input type="text" class="color-picker" name="staffh_cta_primary_bg" value="' . $primary_bg . '" />';
 }
 
 function staffh_cta_primary_text_callback() {
-    $primary_text = get_option('staffh_cta_primary_text', "#FFFFFF");
+    $primary_text = get_option('staffh_cta_primary_text');
 
     echo '<input type="text" class="color-picker" name="staffh_cta_primary_text" value="' . $primary_text . '" />';
 }
 
 function staffh_cta_secondary_bg_callback() {
-    $secondary_bg = get_option('staffh_cta_secondary_bg', "#CCCCCC");
+    $secondary_bg = get_option('staffh_cta_secondary_bg');
 
     echo '<input type="text" class="color-picker" name="staffh_cta_secondary_bg" value="' . $secondary_bg . '" />';
 }
 
 function staffh_cta_secondary_text_callback() {
-    $secondary_text = get_option('staffh_cta_secondary_text', "#FFFFFF");
+    $secondary_text = get_option('staffh_cta_secondary_text');
 
     echo '<input type="text" class="color-picker" name="staffh_cta_secondary_text" value="' . $secondary_text . '" />';
 }
 
 function staffh_cta_tertiary_bg_callback() {
-    $tertiary_bg = get_option('staffh_cta_tertiary_bg', "#DDDDDD");
+    $tertiary_bg = get_option('staffh_cta_tertiary_bg');
 
     echo '<input type="text" class="color-picker" name="staffh_cta_tertiary_bg" value="' . $tertiary_bg . '" />';
 }
 
 function staffh_cta_tertiary_text_callback() {
-    $tertiary_text = get_option('staffh_cta_tertiary_text', "#000000");
+    $tertiary_text = get_option('staffh_cta_tertiary_text');
 
     echo '<input type="text" class="color-picker" name="staffh_cta_tertiary_text" value="' . $tertiary_text . '" />';
 }
@@ -217,7 +217,7 @@ function staffh_settings_init() {
     $fields = [
         // 'Field ID' => [ 'title', 'callback', 'section', 'setting name', 'setting type', 'default value']
         'staffh_archive_slug' => ['Archive Slug', 'staffh_archive_slug_callback', 'archive', 'staffh_archive_slug', null, null],
-        'staffh_disable_archive' => ['Disable the archive?', 'staffh_disable_callback', 'archive', 'staffh_disable_archive_page', 'boolean', 0],
+        'staffh_disable_archive' => ['Disable the archive?', 'staffh_disable_callback', 'archive', 'staffh_disable_archive_page', 'boolean', 1],
         'staffh_cta_primary_bg' => ['Primary CTA Background Color', 'staffh_cta_primary_bg_callback', 'ctas', 'staffh_cta_primary_bg', null, null],
         'staffh_cta_primary_text' => ['Primary CTA Text Color', 'staffh_cta_primary_text_callback', 'ctas', 'staffh_cta_primary_text', null, null],
         'staffh_cta_secondary_bg' => ['Secondary CTA Background Color', 'staffh_cta_secondary_bg_callback', 'ctas', 'staffh_cta_secondary_bg', null, null],

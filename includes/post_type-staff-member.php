@@ -7,7 +7,7 @@ function staffh_register_staff_member_post_type()
     $slug = get_option('staffh_archive_slug', 'staff-members');
 
     // Register the post type with the 'has_archive' parameter based on the settings
-    $has_archive = get_option('staffh_disable_archive_page', 0);
+    $has_archive = get_option('staffh_disable_archive_page');
 
     $labels = array(
         'name'               => __('Staff', 'staffh'),

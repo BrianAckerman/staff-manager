@@ -43,6 +43,17 @@ function staffh_custom_single_template($template) {
 
 add_filter('template_include', 'staffh_custom_single_template');
 
+// Default options
+if ( false === get_option( 'staffh_disable_archive_page' ) ) {
+    // Add the option with the default value.
+    add_option( 'staffh_disable_archive_page', '1' );
+}
+
+if ( false === get_option( 'staffh_include_archive_in_permalink' ) ) {
+    // Add the option with the default value.
+    add_option( 'staffh_include_archive_in_permalink', '1' );
+}
+
 // Helper Function(s)
 function get_icon_file_name($link_type) {
     $icon_map = array(

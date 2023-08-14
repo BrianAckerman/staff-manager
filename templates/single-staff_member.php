@@ -41,83 +41,90 @@ $cta_colors = [
                     'callsToAction' => $parsed_data['callsToAction'] ?? [],
                 ];
 
-                $col_one = has_post_thumbnail() ? '300px' : '';
-                $col_two = $quick_links || $staff['callsToAction'] ? '300px' : '';
+                $class_hasimage = '';
+                $class_hassidebar = '';
 
+                if (  has_post_thumbnail() ) {
+                    $class_hasimage = 'has-staffh-image';
+                }
+                if ( $quick_links || $staff['callsToAction'] ) {
+                    $class_hassidebar = 'has-staffh-sidebar';
+                }
             ?>
-        <div class="staffh_staff_member"
-            style="grid-template-columns: <?php echo $col_one ?> 1fr <?php echo $col_two ?>">
+        <div class="staffh_staff_member <?php echo $class_hasimage ?> <?php echo $class_hassidebar ?>">
+
             <?php if (has_post_thumbnail()): ?>
             <div class="staffh_staff_photo"><?php the_post_thumbnail(); ?></div>
             <?php endif; ?>
+
             <div class="staffh_staff_information">
-
-
                 <?php 
-                // Display name and job title
-                if ($staff['fullName'] || $staff['jobTitle']) {
-                    echo '<h1>';
-                    if ($staff['fullName']) echo "<div class=\"staffh_staff_heading\">{$staff['fullName']}</div>";
-                    if ($staff['jobTitle']) echo "<div class=\"staffh_sub_heading\">{$staff['jobTitle']}</div>";
-                    echo '</h1>';
-                }
-
-                // Display contact details
-                echo '<address>';
-                foreach (['Office' => $staff['officePhone'], 'Cell' => $staff['cellPhone']] as $label => $phone) {
-                    if ($phone) echo "<div><span>{$label}: </span><a href=\"tel:{$phone}\">{$phone}</a></div>";
-                }
-                if ($staff['email']) echo "<div>Email: <a href=\"mailto:{$staff['email']}\">{$staff['email']}</a></div>";
-
-                // Display social links
-                if ($staff['staffLinks']) {
-                    echo '<div class="staffh_staff_social"><ul>';
-                    foreach ($staff['staffLinks'] as $link) {
-                        $icon_file_name = get_icon_file_name($link['type']);
-                        $img_url = plugins_url('../img/fontawesome/' . $icon_file_name, __FILE__);
-                        $type = strtolower($link['type']);
-                        echo "<li><a class=\"{$type}\" href=\"" . esc_url($link['url']) . "\" target=\"_blank\">";
-                        echo "<img src=\"" . esc_url($img_url) . "\" alt=\"" . esc_attr($link['type']) . "\" height=\"25px\" />";
-                        echo "</a></li>";
+                    // Display name and job title
+                    if ($staff['fullName'] || $staff['jobTitle']) {
+                        echo '<h1>';
+                        if ($staff['fullName']) echo "<div class=\"staffh_staff_heading\">{$staff['fullName']}</div>";
+                        if ($staff['jobTitle']) echo "<div class=\"staffh_sub_heading\">{$staff['jobTitle']}</div>";
+                        echo '</h1>';
                     }
-                    echo '</ul></div>';
-                }
 
-                // Display about
-                if ($staff['about']) echo "<div class=\"staffh_staff_body\">{$staff['about']}</div>";
-            endwhile;
-            ?>
+                    // Display contact details
+                    echo '<address>';
+                    foreach (['Office' => $staff['officePhone'], 'Cell' => $staff['cellPhone']] as $label => $phone) {
+                        if ($phone) echo "<div><span>{$label}: </span><a href=\"tel:{$phone}\">{$phone}</a></div>";
+                    }
+                    if ($staff['email']) echo "<div>Email: <a href=\"mailto:{$staff['email']}\">{$staff['email']}</a></div>";
+
+                    // Display social links
+                    if ($staff['staffLinks']) {
+                        echo '<div class="staffh_staff_social"><ul>';
+                        foreach ($staff['staffLinks'] as $link) {
+                            $icon_file_name = get_icon_file_name($link['type']);
+                            $img_url = plugins_url('../img/fontawesome/' . $icon_file_name, __FILE__);
+                            $type = strtolower($link['type']);
+                            echo "<li><a class=\"{$type}\" href=\"" . esc_url($link['url']) . "\" target=\"_blank\">";
+                            echo "<img src=\"" . esc_url($img_url) . "\" alt=\"" . esc_attr($link['type']) . "\" height=\"25px\" />";
+                            echo "</a></li>";
+                        }
+                        echo '</ul></div>';
+                    }
+
+                    // Display about
+                    if ($staff['about']) echo "<div class=\"staffh_staff_body\">{$staff['about']}</div>";
+                endwhile;
+                ?>
             </div>
 
-            <div>
-                <?php
-            // Display calls to action
-            if ($staff['callsToAction']) {
-                echo '<div class="staffh_calls-to-action"><ul>';
-                foreach ($staff['callsToAction'] as $button) {
-                    $colors = $cta_colors[$button['type']] ?? ['bg' => '#ccc', 'text' => '#000'];
-                    echo "<li><a role=\"button\" style=\"background-color: {$colors['bg']}; color: {$colors['text']}\" href=\"" . esc_url($button['url']) . "\">{$button['label']}</a></li>";
-                }
-                echo '</ul></div>';
-            }
-
-            // Display quick links
-            if ($quick_links) {
-                echo '<div class="staffh_quick-links"><h3>Quick Contacts</h3><ul>';
-                foreach ($quick_links as $link) {
-                    if ($link['status']) {
-                        echo "<li>";
-                        echo "<h4>{$link['title']}</h4>";
-                        echo "<h5>{$link['name']}</h5>";
-                        echo "<p><a href=\"tel:{$link['phone']}\">{$link['phone']}</a></p>";
-                        echo "<p><a href=\"mailto:{$link['email']}\">{$link['email']}</a></p>";
-                        echo "</li>";
+            <?php
+                if($staff['callsToAction'] || $quick_links ) {
+                    echo '<div class="staffh_sidebar">';
+                    // Display calls to action
+                    if ($staff['callsToAction']) {
+                        echo '<div class="staffh_calls-to-action"><ul>';
+                        foreach ($staff['callsToAction'] as $button) {
+                            $colors = $cta_colors[$button['type']] ?? ['bg' => '#ccc', 'text' => '#000'];
+                            echo "<li><a role=\"button\" style=\"background-color: {$colors['bg']}; color: {$colors['text']}\" href=\"" . esc_url($button['url']) . "\">{$button['label']}</a></li>";
+                        }
+                        echo '</ul></div>';
                     }
+
+                    // Display quick links
+                    if ($quick_links) {
+                        echo '<div class="staffh_quick-links"><h3>Quick Contacts</h3><ul>';
+                        foreach ($quick_links as $link) {
+                            if ($link['status']) {
+                                echo "<li>";
+                                echo "<h4>{$link['title']}</h4>";
+                                echo "<h5>{$link['name']}</h5>";
+                                echo "<p><a href=\"tel:{$link['phone']}\">{$link['phone']}</a></p>";
+                                echo "<p><a href=\"mailto:{$link['email']}\">{$link['email']}</a></p>";
+                                echo "</li>";
+                            }
+                        }
+                        echo '</ul></div>';
+                    }
+                    echo '</div>';
                 }
-                echo '</ul></div>';
-            }
             ?>
-            </div>
         </div>
     </main>
 </div>

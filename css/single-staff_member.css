@@ -1,6 +1,4 @@
 .staffh_staff_member {
-    display: grid;
-    gap: 2.5%;
     padding:1rem;
 }
 
@@ -13,6 +11,85 @@
     height: auto;
     display: block;
 }
+
+.staffh_staff_information address {
+    font-style: normal;
+}
+
+.staffh_staff_information h1 .staffh_sub_heading {
+    font-size: 0.5rem;
+}
+
+.staffh_staff_social {
+    padding: 10px 0;
+}
+
+
+/* Default three-column grid */
+.staffh_staff_member {
+    display: grid; 
+    gap: 2.5%;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+        "image"
+        "description"
+        "sidebar";
+}
+
+.staffh_staff_photo {
+    grid-area: image;
+    max-height:50vh;
+}
+    .staffh_staff_photo img {
+        object-fit:contain;
+        object-position: left center;
+        max-height:100%;
+    }
+
+.staffh_staff_information {
+    grid-area: description;
+}
+
+.staffh_sidebar {
+    grid-area: sidebar;
+}
+
+
+/* Tablet */
+@media (min-width: 768px) {
+    .staffh_staff_member.has-staffh-image.has-staffh-sidebar {
+        grid-template-columns: 1fr 300px;
+        grid-template-areas:
+            "image sidebar"
+            "description sidebar";
+    }
+    
+    .staffh_staff_member.has-staffh-image:not(.has-staffh-sidebar),
+    .staffh_staff_member:not(.has-staffh-image).has-staffh-sidebar {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "image"
+            "description"
+            "sidebar";
+    }
+}
+
+/* Desktop */
+@media (min-width:1025px) {
+    .staffh_staff_member.has-staffh-image {
+        grid-template-columns: 300px 1fr;
+        grid-template-areas:
+                "image description";
+    }
+    
+    .staffh_staff_member.has-staffh-image.has-staffh-sidebar {
+        grid-template-columns: 300px 1fr 300px;
+        grid-template-areas:
+                "image description sidebar";
+    }
+}
+
+/* Social */
 
 .staffh_staff_social ul {
     display: flex;
@@ -62,6 +139,7 @@
     filter: invert(0);
 }
 
+/* Quick Links */
 .staffh_quick-links ul,
 .staffh_calls-to-action ul,
 .staffh_quick-links li,
@@ -100,17 +178,8 @@
     text-decoration: underline;
 }
 
-.staffh_staff_information address {
-    font-style: normal;
-}
 
-.staffh_staff_information h1 .staffh_sub_heading {
-    font-size: 0.5rem;
-}
-
-.staffh_staff_social {
-    padding: 10px 0;
-}
+/* Calls to action */
 
 .staffh_calls-to-action {
     margin-bottom: 1rem;
