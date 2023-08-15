@@ -27,8 +27,19 @@ $cta_colors = [
 <div id="primary" class="content-area">
     <main id="main" class="site-main">
         <?php
+            $staff = [
+                'fullName' => '',
+                'jobTitle' => '',
+                'email' => '',
+                'officePhone' => '',
+                'cellPhone' => '',
+                'about' => '',
+                'staffLinks' => [],
+                'callsToAction' => [],
+            ];
             while (have_posts()): the_post();
-                $parsed_data = json_decode(get_the_content(), true);
+                global $post;
+                $parsed_data = json_decode($post->post_content, true);
 
                 $staff = [
                     'fullName' => $parsed_data['fullName'] ?? '',
@@ -95,7 +106,7 @@ $cta_colors = [
             </div>
 
             <?php
-                if($staff['callsToAction'] || $quick_links ) {
+                if(!empty($staff['callsToAction']) || $quick_links ) {
                     echo '<div class="staffh_sidebar">';
                     // Display calls to action
                     if ($staff['callsToAction']) {

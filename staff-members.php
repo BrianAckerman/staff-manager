@@ -41,7 +41,27 @@ function staffh_custom_single_template($template) {
     return $template;
 }
 
-add_filter('template_include', 'staffh_custom_single_template');
+// If Oxygen Builder is in use we want to use our template still
+include_once(ABSPATH . 'wp-admin/includes/plugin.php');
+
+if (is_plugin_active('oxygen/functions.php')) { // Make sure the plugin path is correct
+    // Oxygen Builder is active
+    function staffh_custom_content($content) {
+        if (get_post_type() === 'staff_member') {
+            ob_start(); // Start output buffering
+            
+            // Include your custom template file
+            include_once(STAFFH_PLUGIN_DIR . 'templates/single-oxy-staff_member.php');
+            
+            $content = ob_get_clean(); // Get the buffered output and clean the buffer
+        }
+        return $content;
+    }
+
+    add_filter('the_content', 'staffh_custom_content');
+} else {
+    add_filter('template_include', 'staffh_custom_single_template');
+}
 
 // Default options
 if ( false === get_option( 'staffh_disable_archive_page' ) ) {
