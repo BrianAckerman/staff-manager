@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name: Staff Manager
+ * Plugin Name: Carrington Staff Manager
  * Plugin URI: https://example.com/
  * Description: Manage staff and staff pages
  * Version: 1.0.0

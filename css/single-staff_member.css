@@ -16,8 +16,13 @@
     font-style: normal;
 }
 
+.staffh_staff_information h1 {
+    font-weight: 900;
+    line-height: 1.2;
+}
+
 .staffh_staff_information h1 .staffh_sub_heading {
-    font-size: 0.5rem;
+    font-size: 1rem;
 }
 
 .staffh_staff_social {
@@ -140,6 +145,11 @@
 }
 
 /* Quick Links */
+.staffh_quick-links h3 {
+    font-size: 1.5rem;
+    margin: 2rem 0 1rem 0;
+    font-weight:900;
+}
 .staffh_quick-links ul,
 .staffh_calls-to-action ul,
 .staffh_quick-links li,
@@ -153,8 +163,7 @@
     margin-bottom: 1rem;
 }
 
-.staffh_quick-links h4,
-.staffh_staff_information h1 {
+.staffh_quick-links h4 {
     font-weight: bold;
     line-height: 1.2;
     margin: 0;
