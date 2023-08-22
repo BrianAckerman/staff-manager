@@ -78,6 +78,7 @@ function fetch_quick_contacts_data() {
             'title' => $contact->title,
             'email' => $contact->email,
             'phone' => $contact->phone,
+            'priority' => $contact->priority,
             'staff_members'=> $staff_members,
         );
     }
@@ -107,6 +108,7 @@ function get_associated_quick_contacts($post_id) {
                     'title' => $contact['title'],
                     'email' => $contact['email'],
                     'phone' => $contact['phone'],
+                    'priority' => $contact['priority'],
                 );
             }
         }

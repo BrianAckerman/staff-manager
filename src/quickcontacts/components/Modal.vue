@@ -62,6 +62,14 @@
               required
             />
           </div>
+          <div class="form-group">
+            <label for="priority">Priority</label>
+            <select id="priority" v-model="temporaryContact.priority" required>
+              <option value="1">High</option>
+              <option value="2" selected>Normal</option>
+              <option value="3">Low</option>
+            </select>
+          </div>
           <TagInput
             :label="tagsTitle"
             :temporaryContact="temporaryContact"
@@ -74,6 +82,10 @@
               Cancel
             </button>
             <button type="submit" class="button">Save</button>
+          </div>
+          <div class="debug" style="display: flex">
+            <pre>{{ this.temporaryContact }}</pre>
+            <pre>{{ this.contact }}</pre>
           </div>
         </form>
       </div>
@@ -184,12 +196,17 @@ export default {
   display: block;
 }
 .modal-content form input,
+.modal-content form select,
 .modal-content form textarea {
   margin-bottom: 1rem;
   width: 100%;
   border-radius: 4px;
   border: solid 1px #ccc;
   padding: 0.75rem;
+}
+
+.modal-content form select {
+  width: 200px;
 }
 .modal-actions {
   padding: 1rem 0;

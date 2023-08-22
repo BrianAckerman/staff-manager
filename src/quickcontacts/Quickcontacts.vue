@@ -55,7 +55,6 @@
 
 <script>
 const wpData = window.wpData || {};
-const wp_nonce = wpData.nonce;
 
 import Card from "./components/Card.vue";
 import Modal from "./components/Modal.vue";
@@ -78,7 +77,7 @@ export default {
   methods: {
     async fetchQuickContacts(method) {
       if (!wpData.canEditPosts) {
-        console.log("User does not have edit_posts capability");
+        console.warn("User does not have edit_posts capability");
         return;
       }
       // If quickContacts are in the wpData

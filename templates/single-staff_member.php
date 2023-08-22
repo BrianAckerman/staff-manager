@@ -118,6 +118,20 @@ $cta_colors = [
                         echo '</ul></div>';
                     }
 
+                    // Custom comparison function for usort
+                    function sort_by_priority_and_title($a, $b) {
+                        // If the priorities are different, sort by priority
+                        if ($a['priority'] != $b['priority']) {
+                            return $a['priority'] - $b['priority'];
+                        }
+                        
+                        // If the priorities are the same, sort by name
+                        return strcmp($a['title'], $b['title']);
+                    }
+
+                    // Sort the quick_links by priority and then name
+                    usort($quick_links, 'sort_by_priority_and_title');
+
                     // Display quick links
                     if ($quick_links) {
                         echo '<div class="staffh_quick-links"><h3>Quick Contacts</h3><ul>';

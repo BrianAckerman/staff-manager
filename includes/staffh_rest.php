@@ -110,6 +110,10 @@ function register_test_reest_route() {
                 'sanitize_callback' => 'sanitize_text_field',
                 'validate_callback' => 'rest_validate_request_arg',
             ),
+            'priority' => array(
+                'type' => 'integer',
+                'validate_callback' => 'rest_validate_request_arg',
+            ),
             'status' => array(
                 'type' => 'boolean',
                 'sanitize_callback' => 'absint',
@@ -152,6 +156,10 @@ function register_test_reest_route() {
             'phone' => array(
                 'type' => 'string',
                 'sanitize_callback' => 'sanitize_text_field',
+                'validate_callback' => 'rest_validate_request_arg',
+            ),
+            'priority' => array(
+                'type' => 'integer',
                 'validate_callback' => 'rest_validate_request_arg',
             ),
             'status' => array(
@@ -259,7 +267,7 @@ function get_staff_member_counts() {
  */
 function get_quick_contacts_data() {
     // Retrieve the quick contacts data from the database
-    // fetch_quick_contacts_data lives in admin_quickcontacts.php
+    // fetch_quick_contacts_data lives in staffh_admin_quickcontacts.php
     $contacts = fetch_quick_contacts_data();
 
     // Return the quick contacts data as the REST response
@@ -390,6 +398,7 @@ function update_quick_contact($request) {
             'title'  => sanitize_text_field($updated_contact_data['title']),
             'email'  => sanitize_email($updated_contact_data['email']),
             'phone'  => sanitize_text_field($updated_contact_data['phone']),
+            'priority' => $updated_contact_data['priority'],
         ),
         array('id' => $contact_id)
     );
