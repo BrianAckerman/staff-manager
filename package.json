@@ -8,6 +8,7 @@
         "maska": "^2.1.9",
         "mitt": "^3.0.0",
         "pinia": "^2.0.35",
+        "quill-html-edit-button": "^2.2.12",
         "vite": "^4.3.3",
         "vue": "^3.2.47"
     }

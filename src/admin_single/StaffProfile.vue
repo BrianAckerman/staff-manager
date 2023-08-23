@@ -9,6 +9,7 @@ export default {
   data: function () {
     return {
       title: "Staff Information",
+      quillInstance: null,
     };
   },
   computed: {
@@ -36,6 +37,44 @@ export default {
         hidden.value = JSON.stringify(newValue);
         // console.log("Staff Info changed:", newValue);
       },
+    },
+  },
+  methods: {
+    handleEditorReady(editor) {
+      this.quillInstance = editor;
+    },
+    openMediaPicker() {
+      // Ensure the WordPress media library exists
+      if (wp.media) {
+        // Create the media frame.
+        let frame = wp.media({
+          title: "Select or Upload Media",
+          button: {
+            text: "Use this media",
+          },
+          multiple: false, // Set to true if you want to allow multiple file selection
+        });
+
+        // When an image is selected in the media frame...
+        frame.on("select", () => {
+          // Get media attachment details from the frame state
+          let attachment = frame.state().get("selection").first().toJSON();
+
+          // Let's assume you want to insert the image URL into Quill
+          this.insertImageToQuill(attachment.url);
+
+          console.log(attachment);
+        });
+
+        // Open the modal
+        frame.open();
+      }
+    },
+    insertImageToQuill(url) {
+      if (this.quillInstance) {
+        let range = this.quillInstance.getSelection();
+        this.quillInstance.insertEmbed(range.index, "image", url);
+      }
     },
   },
 };
@@ -82,10 +121,31 @@ export default {
         data-maska="(###) ###-####"
       />
     </div>
+    <button @click.prevent="openMediaPicker">Add Media</button>
     <quill-editor
+      @ready="handleEditorReady"
       theme="snow"
       v-model:content="staffInfo.about"
       contentType="html"
+      :options="{
+        theme: 'snow',
+        modules: {
+          toolbar: [
+            [{ font: [] }, { size: [] }],
+            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+            [
+              { list: 'ordered' },
+              { list: 'bullet' },
+              { indent: '-1' },
+              { indent: '+1' },
+            ],
+            ['direction', { align: [] }],
+            ['link', 'video'],
+            [{ color: [] }, { background: [] }, 'html'], // custom button for raw html editing
+          ],
+          htmlEditButton: {},
+        },
+      }"
     ></quill-editor>
   </div>
 </template>

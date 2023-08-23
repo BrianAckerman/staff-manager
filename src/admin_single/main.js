@@ -8,6 +8,13 @@ import callsToAction from "./StaffCallsToAction.vue";
 import staffContactAssociations from "./StaffContactAssociations.vue";
 import "../assets/core.css";
 
+// Import Quill and the htmlEditButton module
+import Quill from "quill";
+import htmlEditButton from "quill-html-edit-button";
+
+// Register the htmlEditButton module with Quill
+Quill.register("modules/htmlEditButton", htmlEditButton);
+
 const store = createPinia();
 
 const createAndMountApp = (component, mountPoint, store) => {
