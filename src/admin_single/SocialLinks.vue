@@ -224,7 +224,7 @@ export default {
 }
 
 .staffh_social-link-item .grip-dots img {
-  height: 1.8em;
+  width: 6px;
   vertical-align: middle;
   opacity: 0.25;
   cursor: grab;

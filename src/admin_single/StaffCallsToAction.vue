@@ -66,25 +66,31 @@
           "
           :title="element.url"
         >
-          <span>{{ element.label }}</span>
-          <br />
-          <span>{{ element.url }}</span>
-          <button
-            role="button"
-            title="Edit"
-            @click.prevent="edit(index)"
-            class="staffh_btn staffh_btn-link"
-          >
-            Edit
-          </button>
-          <button
-            role="button"
-            title="Delete"
-            @click.prevent="remove(index)"
-            class="staffh_btn staffh_btn-link"
-          >
-            Delete
-          </button>
+          <span class="grip-dots">
+            <img
+              :src="iconBaseUrl + '/fontawesome/grip-dots-vertical.svg'"
+              alt=""
+            />
+          </span>
+          <span class="cta-label">{{ element.label }}</span>
+          <span>
+            <button
+              role="button"
+              title="Edit"
+              @click.prevent="edit(index)"
+              class="staffh_btn staffh_btn-link"
+            >
+              Edit
+            </button>
+            <button
+              role="button"
+              title="Delete"
+              @click.prevent="remove(index)"
+              class="staffh_btn staffh_btn-link"
+            >
+              Delete
+            </button>
+          </span>
         </li>
       </template>
     </Draggable>
@@ -105,6 +111,7 @@ export default {
       view: null,
       activeIndex: null,
       activeButton: {},
+      iconBaseUrl: wpData.staffh_img_url,
     };
   },
   computed: {
@@ -178,45 +185,42 @@ export default {
 </script>
 
 <style scoped>
-.staffh_staff-links {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.staffh_social-links-list {
-  margin: 0;
-  padding: 0;
+.staffh_calls_to_action-list {
   list-style: none;
 }
 
-.staffh_social-link-item {
-  margin: 0 0 2px;
-  padding: 5px 8px;
+.staffh_calls_to_action-list li {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  font-size: 10px;
-  border-bottom: solid 1px #ccc;
+  padding: 10px 10px 10px 5px;
+  line-height: 1;
 }
 
-.staffh_social-link-item span {
+.staffh_calls_to_action-list .cta-label {
   flex-grow: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: inline-block;
+  padding-left: 1em;
 }
-
-.staffh_social-link-item span.icon {
-  width: 22px;
-  margin-right: 8px;
-  flex-grow: 0;
-}
-
-.staffh_social-link-item span.icon img {
-  max-width: 100%;
+.staffh_calls_to_action-list .grip-dots img {
+  width: 6px;
+  opacity: 0.25;
+  cursor: grab;
   vertical-align: middle;
 }
 
+.staffh_calls_to_action-list li button {
+  font-size: 10px;
+}
+.staffh_form-group label {
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 0.25em;
+  line-height: 1.25;
+}
+
+.staffh_form-control {
+  width: 100%;
+}
 .staffh_btn-link span {
   font-size: 16px;
   color: #9a9a9a;
@@ -239,17 +243,6 @@ export default {
 
 .staffh_btn-link:hover {
   color: #135e96;
-}
-
-.staffh_form-group label {
-  display: block;
-  margin-top: 1em;
-  margin-bottom: 0.25em;
-  line-height: 1.25;
-}
-
-.staffh_form-control {
-  width: 100%;
 }
 
 .staffh_btn-primary {
