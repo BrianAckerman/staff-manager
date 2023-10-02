@@ -42,40 +42,62 @@
     </form>
   </div>
   <div v-else class="staffh_staff-links">
-    <ul class="staffh_social-links-list">
-      <li
-        v-for="(link, index) in staffInfo.staffLinks"
-        :key="index"
-        class="staffh_social-link-item"
-        :class="typeof link.type !== 'undefined' ? link.type.toLowerCase() : ''"
-        :title="link.url"
-      >
-        <span class="icon">
-          <img
-            :src="iconBaseUrl + '/fontawesome/' + returnIconFileName(link.type)"
-            :alt="link.type"
-          />
-        </span>
-        <span>{{ link.url }}</span>
-        <button
-          role="button"
-          title="Edit"
-          @click.prevent="edit(index)"
-          class="staffh_btn staffh_btn-link"
+    <Draggable
+      v-model="staffInfo.staffLinks"
+      class="staffh_social-links-list"
+      group="socialLinks"
+      :animation="200"
+    >
+      <template #item="{ element, index }">
+        <li
+          :key="index"
+          class="staffh_social-link-item"
+          :class="
+            typeof element.type !== 'undefined'
+              ? element.type.toLowerCase()
+              : ''
+          "
+          :title="element.url"
         >
-          Edit
-        </button>
-        <button
-          role="button"
-          title="Delete"
-          @click.prevent="remove(index)"
-          class="staffh_btn staffh_btn-link"
-        >
-          Delete
-        </button>
-      </li>
-    </ul>
-    <button class="staffh_btn staffh_btn-secondary" @click.prevent="this.new">
+          <span class="grip-dots">
+            <img
+              :src="iconBaseUrl + '/fontawesome/grip-dots-vertical.svg'"
+              alt=""
+            />
+          </span>
+          <span class="icon">
+            <img
+              :src="
+                iconBaseUrl + '/fontawesome/' + returnIconFileName(element.type)
+              "
+              :alt="element.type"
+            />
+          </span>
+          <span>{{ element.url }}</span>
+          <button
+            role="button"
+            title="Edit"
+            @click.prevent="edit(index)"
+            class="staffh_btn staffh_btn-link"
+          >
+            Edit
+          </button>
+          <button
+            role="button"
+            title="Delete"
+            @click.prevent="remove(index)"
+            class="staffh_btn staffh_btn-link"
+          >
+            Delete
+          </button>
+        </li>
+      </template>
+    </Draggable>
+
+    <button
+      class="staffh_btn staffh_btn-secondary"
+      @click.prevent="this.newItem"
+    >
       New
     </button>
   </div>
@@ -109,7 +131,7 @@ export default {
     this.view = Boolean(this.staffInfo?.staffLinks?.length);
   },
   methods: {
-    new() {
+    newItem() {
       this.activeLink = {
         type: "",
         url: "",
@@ -176,26 +198,36 @@ export default {
 }
 
 .staffh_social-links-list {
-  margin: 0;
+  margin: 0 0 4px 0;
   padding: 0;
   list-style: none;
 }
 
 .staffh_social-link-item {
   margin: 0;
-  padding: 5px 8px;
+  padding: 5px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 10px;
-  border-bottom: solid 1px #ccc;
+  background: #fff;
 }
 
+.staffh_social-link-item.sortable-chosen .grip-dots img {
+  cursor: grabbing;
+}
 .staffh_social-link-item span {
   flex-grow: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.staffh_social-link-item .grip-dots img {
+  height: 1.8em;
+  vertical-align: middle;
+  opacity: 0.25;
+  cursor: grab;
 }
 
 .staffh_social-link-item span.icon {

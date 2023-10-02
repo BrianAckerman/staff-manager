@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
+import Draggable from "vuedraggable";
 import staffProfile from "./StaffProfile.vue";
 import socialLinks from "./SocialLinks.vue";
 import callsToAction from "./StaffCallsToAction.vue";
@@ -21,6 +22,7 @@ const createAndMountApp = (component, mountPoint, store) => {
   const app = createApp(component);
   app.use(store);
   app.component("QuillEditor", QuillEditor);
+  app.component("Draggable", Draggable);
   app.mount(mountPoint);
 };
 

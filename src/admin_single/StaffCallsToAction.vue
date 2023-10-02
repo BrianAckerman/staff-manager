@@ -49,37 +49,46 @@
     </form>
   </div>
   <div v-else class="staffh_calls_to_action">
-    <ul class="staffh_calls_to_action-list">
-      <li
-        v-for="(button, index) in staffInfo.callsToAction"
-        :key="index"
-        class="staffh_calls_to_action-item"
-        :class="
-          typeof button.type !== 'undefined' ? button.type.toLowerCase() : ''
-        "
-        :title="button.url"
-      >
-        <span>{{ button.label }}</span
-        ><br />
-        <span>{{ button.url }}</span>
-        <button
-          role="button"
-          title="Edit"
-          @click.prevent="edit(index)"
-          class="staffh_btn staffh_btn-link"
+    <Draggable
+      v-model="staffInfo.callsToAction"
+      class="staffh_calls_to_action-list"
+      group="callsToAction"
+      :animation="200"
+    >
+      <template #item="{ element, index }">
+        <li
+          :key="index"
+          class="staffh_calls_to_action-item"
+          :class="
+            typeof element.type !== 'undefined'
+              ? element.type.toLowerCase()
+              : ''
+          "
+          :title="element.url"
         >
-          Edit
-        </button>
-        <button
-          role="button"
-          title="Delete"
-          @click.prevent="remove(index)"
-          class="staffh_btn staffh_btn-link"
-        >
-          Delete
-        </button>
-      </li>
-    </ul>
+          <span>{{ element.label }}</span>
+          <br />
+          <span>{{ element.url }}</span>
+          <button
+            role="button"
+            title="Edit"
+            @click.prevent="edit(index)"
+            class="staffh_btn staffh_btn-link"
+          >
+            Edit
+          </button>
+          <button
+            role="button"
+            title="Delete"
+            @click.prevent="remove(index)"
+            class="staffh_btn staffh_btn-link"
+          >
+            Delete
+          </button>
+        </li>
+      </template>
+    </Draggable>
+
     <button class="staffh_btn staffh_btn-secondary" @click.prevent="this.new">
       New
     </button>
