@@ -1,7 +1,7 @@
 <?php
 
 # Social Links
-add_action('add_meta_boxes_staff_member', 'create_staff_social_meta_box');
+/*add_action('add_meta_boxes_staff_member', 'create_staff_social_meta_box');
 
 function create_staff_social_meta_box() {
     add_meta_box(
@@ -20,7 +20,7 @@ function create_staff_social_meta_box() {
         'side',                                     // Context
         'default'                                   // Priority
     );
-}
+} */
 
 function staffh_social_meta_box($post) {
     // Add a placeholder element for the Social Links Vue app

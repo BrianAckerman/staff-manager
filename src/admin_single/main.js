@@ -24,7 +24,16 @@ const createAndMountApp = (component, mountPoint, store) => {
   app.mount(mountPoint);
 };
 
-createAndMountApp(staffProfile, "#admin_staff-edit-app", store);
+let postBody = document.getElementById("post-body-content");
+if (postBody) {
+  let staffhDiv = document.createElement("div");
+  staffhDiv.id = "staffh_body";
+  postBody.appendChild(staffhDiv);
+}
+
+//#admin_staff-edit-app
+
+createAndMountApp(staffProfile, "#staffh_body", store);
 createAndMountApp(socialLinks, "#staffh_social-links-app", store);
 createAndMountApp(callsToAction, "#staffh_calls-to-action-app", store);
 createAndMountApp(

@@ -121,7 +121,14 @@ export default {
         data-maska="(###) ###-####"
       />
     </div>
-    <button @click.prevent="openMediaPicker">Add Media</button>
+    <button
+      type="button"
+      id="insert-media-button"
+      class="button insert-media add_media"
+      @click.prevent="openMediaPicker"
+    >
+      <span class="wp-media-buttons-icon"></span> Add Media
+    </button>
     <quill-editor
       @ready="handleEditorReady"
       theme="snow"
@@ -161,7 +168,7 @@ input,
 textarea,
 select {
   width: 100%;
-  padding: 10px;
+  padding: 5px 10px 5px 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
@@ -181,6 +188,10 @@ input[type="checkbox"] {
 
 textarea {
   height: 150px;
+}
+
+#insert-media-button {
+  margin-bottom: 10px;
 }
 
 button[type="submit"] {

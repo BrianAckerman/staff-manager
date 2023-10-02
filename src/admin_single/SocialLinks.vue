@@ -182,7 +182,7 @@ export default {
 }
 
 .staffh_social-link-item {
-  margin: 0 0 2px;
+  margin: 0;
   padding: 5px 8px;
   display: flex;
   justify-content: space-between;
@@ -199,7 +199,7 @@ export default {
 }
 
 .staffh_social-link-item span.icon {
-  width: 22px;
+  width: 12px;
   margin-right: 8px;
   flex-grow: 0;
 }

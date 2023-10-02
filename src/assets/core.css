@@ -1,6 +1,28 @@
+#staffh_body {
+  background: #fff;
+  padding:1rem 12px;
+  margin:1rem 0 10px 0;
+}
+.ql-html-popupTitle {
+  display: none;
+}
+.ql-html-buttonCancel {
+}
+.ql-html-buttonOk {
+}
 .ql-editor {
   min-height: 200px;
 }
 .ql-editor ul>li:before {
     content: '\2022';
 }
+.ql-editor h1,
+.ql-editor h2,
+.ql-editor h3 {
+  padding-left:0 !important;
+  padding-right:0 !important;
+}
+
+.ql-editor h1 { font-size:2em !important; }
+.ql-editor h2 { font-size:1.75em !important; }
+.ql-editor h3 { font-size:1.5em !important; }
