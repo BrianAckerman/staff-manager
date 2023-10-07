@@ -30,11 +30,10 @@ This WordPress plugin provides a robust solution for managing and displaying sta
 **Using with Oxygen Builder**:
 
 1. Create a template for the staff members custom post type. Inherit any parent/site level templates.
-2. Add a code block and in the PHP/HTML section, run the render template function
-
-<?php
-render_staffh_oxygen_staff_template();
-?>
+2. Add a code block and in the PHP/HTML section and use the render template function
+<pre>&lt;?php
+  render_staffh_oxygen_staff_template();
+?&gt;</pre>
 
 ## Folder Structure
 
