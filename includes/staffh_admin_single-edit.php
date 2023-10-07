@@ -51,6 +51,7 @@ function staff_profile_callback($post) {
         'nonce' => wp_create_nonce('wp_rest'),
         'postId' => $post->ID,
         'postType' => $post->post_type,
+        'defaultSocialLinks' => json_encode(get_option('staffh_default_social_links')),
         'socialLinks' => get_post_meta($post->ID, 'social_links', true),
         'availableQuickContacts' => $available_quick_contacts,
         'associatedQuickContacts' => $associated_quick_contacts,

@@ -100,7 +100,7 @@ $cta_colors = [
                     }
 
                     // Display about
-                    if ($staff['about']) echo "<div class=\"staffh_staff_body\">{$staff['about']}</div>";
+                    if ($staff['about']) echo "<div class=\"staffh_staff_body\">" . do_shortcode($staff['about']) . "</div>";
                 endwhile;
                 ?>
             </div>
