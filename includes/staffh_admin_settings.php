@@ -77,13 +77,40 @@ function staffh_settings_save() {
     staffh_boolean_option_update('staffh_include_archive_in_permalink', 'staffh_include_archive_in_permalink');
     staffh_boolean_option_update('staffh_disable_archive_page', 'staffh_disable_archive_page');
 
-    // Handle colors
-    staffh_update_option_if_set('staffh_cta_primary_bg', 'staffh_cta_primary_bg');
-    staffh_update_option_if_set('staffh_cta_primary_text', 'staffh_cta_primary_text');
-    staffh_update_option_if_set('staffh_cta_secondary_bg', 'staffh_cta_secondary_bg');
-    staffh_update_option_if_set('staffh_cta_secondary_text', 'staffh_cta_secondary_text');
-    staffh_update_option_if_set('staffh_cta_tertiary_bg', 'staffh_cta_tertiary_bg');
-    staffh_update_option_if_set('staffh_cta_tertiary_text', 'staffh_cta_tertiary_text');
+    // Handle simple text options
+    $options = [
+        'staffh_cta_primary_bg',
+        'staffh_cta_primary_text',
+        'staffh_cta_secondary_bg',
+        'staffh_cta_secondary_text',
+        'staffh_cta_tertiary_bg',
+        'staffh_cta_tertiary_text',
+    ];
+
+    foreach ($options as $option) {
+        staffh_update_option_if_set($option, $option);
+    }
+
+    // Handle social defaults array
+    $social_links = [];
+    $social_options = [
+        'staffh_default_social_facebook_text' => 'Facebook',
+        'staffh_default_social_twitterX_text' => 'TwitterX',
+        'staffh_default_social_instagram_text' => 'Instagram',
+        'staffh_default_social_linkedin_text' => 'LinkedIn'
+    ];
+
+    foreach ($social_options as $input_name => $type) {
+        if (isset($_POST[$input_name]) && !empty($_POST[$input_name])) {
+            $social_links[] = [
+                'type' => $type,
+                'url' => $_POST[$input_name]
+            ];
+        }
+    }
+
+    update_option('staffh_default_social_links', $social_links);
+
 
     // Archive slug
     if (isset($_POST['staffh_archive_slug'])) {
@@ -160,6 +187,21 @@ function staffh_cta_tertiary_text_callback() {
     echo '<input type="text" class="color-picker" name="staffh_cta_tertiary_text" value="' . $tertiary_text . '" />';
 }
 
+
+// Social Callbacks
+function staffh_default_social_callback($args) {
+    $default_social_links = get_option('staffh_default_social_links', []);
+    $link = '';
+    foreach ($default_social_links as $social_link) {
+        if ($social_link['type'] === $args['label_for']) {
+            $link = $social_link['url'];
+            break;
+        }
+    }
+    echo "<input type='text' name='{$args['option_name']}' value='$link' />";
+}
+
+
 // This section groups all functions related to admin initialization and settings display
 function staffh_settings() {
     // Check if the form is submitted and handle the save action
@@ -169,7 +211,7 @@ function staffh_settings() {
     }
     ?>
 <div class="wrap">
-    <h1>Settings</h1>
+    <h1>Carrington Staff Settings</h1>
 
     <?php
         if (isset($_GET['settings-updated'])) {
@@ -223,34 +265,138 @@ function staffh_settings_init() {
     $sections = [
         'archive' => 'staffh_archive_settings_section',
         'ctas' => 'staffh_ctas_settings_section',
+        'social' => 'staffh_social_settings_section',
         'settings' => 'staffh_settings_section',
-    ];
-
-    $fields = [
-        // 'Field ID' => [ 'title', 'callback', 'section', 'setting name', 'setting type', 'default value']
-        'staffh_archive_slug' => ['Archive Slug', 'staffh_archive_slug_callback', 'archive', 'staffh_archive_slug', null, null],
-        'staffh_disable_archive' => ['Disable the archive?', 'staffh_disable_callback', 'archive', 'staffh_disable_archive_page', 'boolean', 1],
-        'staffh_cta_primary_bg' => ['Primary CTA Background Color', 'staffh_cta_primary_bg_callback', 'ctas', 'staffh_cta_primary_bg', null, null],
-        'staffh_cta_primary_text' => ['Primary CTA Text Color', 'staffh_cta_primary_text_callback', 'ctas', 'staffh_cta_primary_text', null, null],
-        'staffh_cta_secondary_bg' => ['Secondary CTA Background Color', 'staffh_cta_secondary_bg_callback', 'ctas', 'staffh_cta_secondary_bg', null, null],
-        'staffh_cta_secondary_text' => ['Secondary CTA Text Color', 'staffh_cta_secondary_text_callback', 'ctas', 'staffh_cta_secondary_text', null, null],
-        'staffh_cta_tertiary_bg' => ['Tertiary CTA Background Color', 'staffh_cta_tertiary_bg_callback', 'ctas', 'staffh_cta_tertiary_bg', null, null],
-        'staffh_cta_tertiary_text' => ['Tertiary CTA Text Color', 'staffh_cta_tertiary_text_callback', 'ctas', 'staffh_cta_tertiary_text', null, null],
-        'staffh_settings_nonce' => ['', 'staffh_settings_nonce_callback', 'settings', null, null, null]
     ];
 
     foreach ($sections as $section) {
         add_settings_section($section, '', '', 'staffh_settings');
     }
 
-    foreach ($fields as $field_id => $details) {
-        add_settings_field($field_id, $details[0], $details[1], 'staffh_settings', $sections[$details[2]]);
+    $fields = [
+        'staffh_archive_slug' => [
+            'title' => 'Archive Slug',
+            'callback' => 'staffh_archive_slug_callback',
+            'section' => 'archive',
+            'setting_name' => 'staffh_archive_slug',
+            'setting_type' => null,
+            'default_value' => null
+        ],
+        'staffh_disable_archive' => [
+            'title' => 'Disable the archive?',
+            'callback' => 'staffh_disable_callback',
+            'section' => 'archive',
+            'setting_name' => 'staffh_disable_archive_page',
+            'setting_type' => 'boolean',
+            'default_value' => 1
+        ],
+        'staffh_cta_primary_bg' => [
+            'title' => 'Primary CTA Background Color',
+            'callback' => 'staffh_cta_primary_bg_callback',
+            'section' => 'ctas',
+            'setting_name' => 'staffh_cta_primary_bg',
+            'setting_type' => null,
+            'default_value' => null
+        ],
+        'staffh_cta_primary_text' => [
+            'title' => 'Primary CTA Text Color',
+            'callback' => 'staffh_cta_primary_text_callback',
+            'section' => 'ctas',
+            'setting_name' => 'staffh_cta_primary_text',
+            'setting_type' => null,
+            'default_value' => null
+        ],
+        'staffh_cta_secondary_bg' => [
+            'title' => 'Secondary CTA Background Color',
+            'callback' => 'staffh_cta_secondary_bg_callback',
+            'section' => 'ctas',
+            'setting_name' => 'staffh_cta_secondary_bg',
+            'setting_type' => null,
+            'default_value' => null
+        ],
+        'staffh_cta_secondary_text' => [
+            'title' => 'Secondary CTA Text Color',
+            'callback' => 'staffh_cta_secondary_text_callback',
+            'section' => 'ctas',
+            'setting_name' => 'staffh_cta_secondary_text',
+            'setting_type' => null,
+            'default_value' => null
+        ],
+        'staffh_cta_tertiarty_bg' => [
+            'title' => 'Tertiary CTA Background Color',
+            'callback' => 'staffh_cta_tertiary_bg_callback',
+            'section' => 'ctas',
+            'setting_name' => 'staffh_cta_tertiary_bg',
+            'setting_type' => null,
+            'default_value' => null
+        ],
+        'staffh_cta_tertiary_text' => [
+            'title' => 'Tertiary CTA Text Color',
+            'callback' => 'staffh_cta_tertiary_text_callback',
+            'section' => 'ctas',
+            'setting_name' => 'staffh_cta_tertiary_text',
+            'setting_type' => null,
+            'default_value' => null
+        ],
+        'staffh_default_social_facebook' => [
+            'title' => 'Facebook',
+            'callback' => 'staffh_default_social_callback',
+            'section' => 'social',
+            'setting_name' => 'staffh_default_social_facebook_text',
+            'setting_type' => null,
+            'default_value' => null,
+            'network' => 'Facebook'
+        ],
+        'staffh_default_social_instagram' => [
+            'title' => 'Instagram',
+            'callback' => 'staffh_default_social_callback',
+            'section' => 'social',
+            'setting_name' => 'staffh_default_social_instagram_text',
+            'setting_type' => null,
+            'default_value' => null,
+            'network' => 'Instagram'
+        ],
+        'staffh_default_social_twitterX' => [
+            'title' => 'TwitterX',
+            'callback' => 'staffh_default_social_callback',
+            'section' => 'social',
+            'setting_name' => 'staffh_default_social_twitterX_text',
+            'setting_type' => null,
+            'default_value' => null,
+            'network' => 'TwitterX'
+        ],
+        'staffh_default_social_linkedin' => [
+            'title' => 'LinkedIn',
+            'callback' => 'staffh_default_social_callback',
+            'section' => 'social',
+            'setting_name' => 'staffh_default_social_linkedin_text',
+            'setting_type' => null,
+            'default_value' => null,
+            'network' => 'LinkedIn'
+        ],
+        'staffh_settings_nonce' => [
+            'title' => '',
+            'callback' => 'staffh_settings_nonce_callback',
+            'section' => 'settings',
+            'setting_name' => null,
+            'setting_type' => null,
+            'default_value' => null
+        ]
+    ];
 
-        if (isset($details[3])) {
-            $args = ['type' => $details[4] ?? 'string', 'default' => $details[5] ?? null];
-            register_setting('staffh_settings_group', $details[3], $args);
+    foreach ($fields as $field_id => $details) {
+        $args = [
+            'label_for' => $details['title'],
+            'option_name' => $details['setting_name']
+        ];
+        add_settings_field($field_id, $details['title'], $details['callback'], 'staffh_settings', $sections[$details['section']], $args);
+
+        if (isset($details['setting_name'])) {
+            $register_args = ['type' => $details['setting_type'] ?? 'string', 'default' => $details['default_value'] ?? null];
+            register_setting('staffh_settings_group', $details['setting_name'], $register_args);
         }
     }
+
 }
 
 add_action('admin_init', 'staffh_settings_init');

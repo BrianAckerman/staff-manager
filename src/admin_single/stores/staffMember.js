@@ -11,7 +11,7 @@ export const useStaffStore = defineStore({
       cellPhone: "",
       about: "",
       isQuickContact: false,
-      staffLinks: [],
+      staffLinks: wpData.defaultSocialLinks || [],
       callsToAction: [],
     },
     post: null,

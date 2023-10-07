@@ -114,6 +114,7 @@ export default {
       activeIndex: null,
       activeLink: {},
       iconBaseUrl: wpData.staffh_img_url,
+      defaultLinks: wpData.defaultSocialLinks,
     };
   },
   computed: {
@@ -128,7 +129,11 @@ export default {
     },
   },
   created() {
-    this.view = Boolean(this.staffInfo?.staffLinks?.length);
+    this.view = true;
+    if (!Boolean(this.staffInfo?.staffLinks?.length)) {
+      this.staffInfo.staffLinks = JSON.parse(this.defaultLinks);
+    }
+    console.log(Boolean(this.staffInfo?.staffLinks?.length));
   },
   methods: {
     newItem() {
