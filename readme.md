@@ -18,6 +18,8 @@ This WordPress plugin provides a robust solution for managing and displaying sta
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 3. Visit the 'Staff Members' section in your admin dashboard to add or edit staff entries.
 
+*src folder contains VUE source files. Use only for development purposes.
+  
 ## Usage
 
 **Adding a Staff Member**:
