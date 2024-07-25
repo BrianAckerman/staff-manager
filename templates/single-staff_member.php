@@ -47,7 +47,7 @@ $cta_colors = [
                     'email' => $parsed_data['email'] ?? '',
                     'officePhone' => $parsed_data['officePhone'] ?? '',
                     'cellPhone' => $parsed_data['cellPhone'] ?? '',
-                    'about' => $parsed_data['about'] ? wp_kses_post($parsed_data['about']) : '',
+                    'about' => isset($parsed_data['about']) ? wp_kses_post($parsed_data['about']) : '',
                     'staffLinks' => $parsed_data['staffLinks'] ?? [],
                     'callsToAction' => $parsed_data['callsToAction'] ?? [],
                 ];
